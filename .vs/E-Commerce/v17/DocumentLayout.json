@@ -1,0 +1,189 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\e-commerce\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|solutionrelative:e-commerce\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8B320FC-59EF-43B4-AE3D-995DB20C0C3E}|Infrastructure\\Presistance\\Presistance.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\infrastructure\\presistance\\infrastructureserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8B320FC-59EF-43B4-AE3D-995DB20C0C3E}|Infrastructure\\Presistance\\Presistance.csproj|solutionrelative:infrastructure\\presistance\\infrastructureserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93176B14-97B1-4893-A190-B741F5960641}|Core\\Services\\Services.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\core\\services\\applicationservicesregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93176B14-97B1-4893-A190-B741F5960641}|Core\\Services\\Services.csproj|solutionrelative:core\\services\\applicationservicesregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\core\\domain\\contracts\\idbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|solutionrelative:core\\domain\\contracts\\idbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C8B320FC-59EF-43B4-AE3D-995DB20C0C3E}|Infrastructure\\Presistance\\Presistance.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\infrastructure\\presistance\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C8B320FC-59EF-43B4-AE3D-995DB20C0C3E}|Infrastructure\\Presistance\\Presistance.csproj|solutionrelative:infrastructure\\presistance\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\e-commerce\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|solutionrelative:e-commerce\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\core\\domain\\exeptions\\basketnotfoundexeption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|solutionrelative:core\\domain\\exeptions\\basketnotfoundexeption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\core\\domain\\exeptions\\notfoundex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|solutionrelative:core\\domain\\exeptions\\notfoundex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\core\\domain\\exeptions\\productnotfoundex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{252CC389-F909-425E-A1E0-068214A2A312}|Core\\Domain\\Domain.csproj|solutionrelative:core\\domain\\exeptions\\productnotfoundex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|c:\\users\\ahmed\\source\\repos\\e-commerce\\e-commerce\\factories\\extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3A9EEA12-3CD0-43F3-903B-81F145F3522E}|E-Commerce\\E-Commerce.csproj|solutionrelative:e-commerce\\factories\\extensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 10,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InfrastructureServiceRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Infrastructure\\Presistance\\InfrastructureServiceRegistration.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Presistance\\InfrastructureServiceRegistration.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Infrastructure\\Presistance\\InfrastructureServiceRegistration.cs",
+              "RelativeToolTip": "Infrastructure\\Presistance\\InfrastructureServiceRegistration.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABsAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:06:39.243Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ApplicationServicesRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Services\\ApplicationServicesRegistration.cs",
+              "RelativeDocumentMoniker": "Core\\Services\\ApplicationServicesRegistration.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Services\\ApplicationServicesRegistration.cs",
+              "RelativeToolTip": "Core\\Services\\ApplicationServicesRegistration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:06:18.387Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IDbinitializer.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Contracts\\IDbinitializer.cs",
+              "RelativeDocumentMoniker": "Core\\Domain\\Contracts\\IDbinitializer.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Contracts\\IDbinitializer.cs",
+              "RelativeToolTip": "Core\\Domain\\Contracts\\IDbinitializer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:02:47.106Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BasketNotFoundExeption.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\BasketNotFoundExeption.cs",
+              "RelativeDocumentMoniker": "Core\\Domain\\Exeptions\\BasketNotFoundExeption.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\BasketNotFoundExeption.cs",
+              "RelativeToolTip": "Core\\Domain\\Exeptions\\BasketNotFoundExeption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:01:33.522Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "NotFoundEx.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\NotFoundEx.cs",
+              "RelativeDocumentMoniker": "Core\\Domain\\Exeptions\\NotFoundEx.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\NotFoundEx.cs",
+              "RelativeToolTip": "Core\\Domain\\Exeptions\\NotFoundEx.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:01:32.916Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ProductNotFoundEx.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\ProductNotFoundEx.cs",
+              "RelativeDocumentMoniker": "Core\\Domain\\Exeptions\\ProductNotFoundEx.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Core\\Domain\\Exeptions\\ProductNotFoundEx.cs",
+              "RelativeToolTip": "Core\\Domain\\Exeptions\\ProductNotFoundEx.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T18:01:32.212Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Extensions.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\Factories\\Extensions.cs",
+              "RelativeDocumentMoniker": "E-Commerce\\Factories\\Extensions.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\Factories\\Extensions.cs",
+              "RelativeToolTip": "E-Commerce\\Factories\\Extensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:58:03.097Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Dbinitializer.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Infrastructure\\Presistance\\Dbinitializer.cs",
+              "RelativeDocumentMoniker": "Infrastructure\\Presistance\\Dbinitializer.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\Infrastructure\\Presistance\\Dbinitializer.cs",
+              "RelativeToolTip": "Infrastructure\\Presistance\\Dbinitializer.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwBQAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:55:33.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\appsettings.json",
+              "RelativeDocumentMoniker": "E-Commerce\\appsettings.json",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\appsettings.json",
+              "RelativeToolTip": "E-Commerce\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-13T17:52:56.843Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\Program.cs",
+              "RelativeDocumentMoniker": "E-Commerce\\Program.cs",
+              "ToolTip": "C:\\Users\\Ahmed\\source\\repos\\E-Commerce\\E-Commerce\\Program.cs",
+              "RelativeToolTip": "E-Commerce\\Program.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAIwBYAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T17:52:24.163Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

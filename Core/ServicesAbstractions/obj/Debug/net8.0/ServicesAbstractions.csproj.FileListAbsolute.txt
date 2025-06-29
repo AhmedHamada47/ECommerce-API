@@ -1,0 +1,17 @@
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\ServicesAbstractions.deps.json
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\ServicesAbstractions.dll
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\ServicesAbstractions.pdb
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\Shared.dll
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\Shared.pdb
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.csproj.AssemblyReference.cache
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.AssemblyInfoInputs.cache
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.AssemblyInfo.cs
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.csproj.CoreCompileInputs.cache
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\Services.E21FAAD2.Up2Date
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.dll
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\refint\ServicesAbstractions.dll
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.pdb
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ref\ServicesAbstractions.dll
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\bin\Debug\net8.0\ServicesAbstractions.runtimeconfig.json
+C:\Users\Ahmed\source\repos\E-Commerce\Core\ServicesAbstractions\obj\Debug\net8.0\ServicesAbstractions.genruntimeconfig.cache
