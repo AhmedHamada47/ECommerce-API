@@ -4,8 +4,9 @@ using ServicesAbstractions;
 
 namespace Presentation.Controllers
 {
-    public class BasketsController(IServiceManager serviceManager)
-           : ApiController
+    [ApiController]
+    [Route("[controller]")]
+    public class BasketsController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<BasketDto>> Get(string id)
