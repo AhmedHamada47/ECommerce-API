@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-
 namespace Presistance.Configuration
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
@@ -15,7 +14,7 @@ namespace Presistance.Configuration
 
             builder.HasOne(p => p.ProductType)
             .WithMany()
-            .HasForeignKey( p => p.TypeId);
+            .HasForeignKey(p => p.TypeId);
 
             builder.Property(p => p.Price)
                 .HasColumnType("decimal(10,3)");

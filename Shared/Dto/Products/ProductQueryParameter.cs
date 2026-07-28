@@ -6,15 +6,15 @@ public class ProductQueryParameter
     private const int MaxPageSize = 10;
 
     public int? BrandId { get; set; }
-    public int? Typeid { get; set; }
-    public ProductSortinOptions options { get; set; }
+    public int? TypeId { get; set; }
+    public ProductSortingOptions SortBy { get; set; }
     public string? Search { get; set; }
 
-    public int PageIndex { get; set; } = 1; // Fixed: renamed to follow C# conventions (Pascal case)
+    public int PageIndex { get; set; } = 1;
     private int _pageSize = DefaultPageSize;
     public int PageSize
     {
         get => _pageSize;
-        set => _pageSize = (value > 0 && value <= MaxPageSize) ? value : DefaultPageSize; // Fixed: spacing and added equal sign for MaxPageSize
+        set => _pageSize = (value > 0 && value <= MaxPageSize) ? value : DefaultPageSize;
     }
 }

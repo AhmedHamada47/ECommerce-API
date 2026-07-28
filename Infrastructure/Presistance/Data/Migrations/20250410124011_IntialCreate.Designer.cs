@@ -10,11 +10,10 @@ using Presistance.Data;
 
 namespace Presistance.Data.Migrations
 {
-    [DbContext(typeof(StoreDbContetx))]
+    [DbContext(typeof(StoreDbContext))]
     [Migration("20250410124011_IntialCreate")]
     partial class IntialCreate
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

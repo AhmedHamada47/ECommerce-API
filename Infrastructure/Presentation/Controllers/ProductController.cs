@@ -1,46 +1,40 @@
-﻿
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Dto;
 using Shared.Dto.Products;
-// using Shared.Dto;
+using ServicesAbstractions;
 
 namespace Presentation.Controllers
 {
-
     [Route("api/[controller]")]
-
     [ApiController]
-    public class ProductController(IServiceManger serviceManger) : ControllerBase
+    public class ProductController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<PagenatedRespones<ProductsRespone>>> GetAllProduct([FromQuery]ProductQueryParameter parameter) // Get BaseUrl/product=>GetAll
+        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetAllProduct([FromQuery] ProductQueryParameter parameter)
         {
-            var products = await serviceManger.ProductService.GetAllProductsAsync(parameter);
+            var products = await serviceManager.ProductService.GetAllProductsAsync(parameter);
             return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductsRespone>> GetProduct(int id) // Get BaseUrl/api/product=>GetAll
+        public async Task<ActionResult<ProductResponse>> GetProduct(int id)
         {
-            var product = await serviceManger.ProductService.GetProductAsync(id);
+            var product = await serviceManager.ProductService.GetProductAsync(id);
             return Ok(product);
         }
 
         [HttpGet("brands")]
-        public async Task<ActionResult<BrandResponse>> GetBrand() // Get BaseUrl/api/product/BrandType
+        public async Task<ActionResult<BrandResponse>> GetBrand()
         {
-            var Brand = await serviceManger.ProductService.GetBrandAsync();
-            return Ok(Brand);
+            var brands = await serviceManager.ProductService.GetBrandAsync();
+            return Ok(brands);
         }
 
         [HttpGet("types")]
-        public async Task<ActionResult<BrandResponse>> GetTypes() // Get BaseUrl/api/product/types
+        public async Task<ActionResult<TypeResponse>> GetTypes()
         {
-            var types = await serviceManger.ProductService.GetTypeAsync();
+            var types = await serviceManager.ProductService.GetTypeAsync();
             return Ok(types);
         }
-
-
     }
 }
- 

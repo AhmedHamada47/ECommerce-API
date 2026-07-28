@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Models;
 
-namespace Domain.Contracts;
-
-    public  interface IUnitOfWork
+namespace Domain.Contracts
+{
+    public interface IUnitOfWork
     {
-    Task<int>SaveChangesAsync();
-    IGenricReposatory<TEntity,Tkey>GetReposatory<TEntity, Tkey>()
-        where TEntity : BaseEntity<Tkey>;
-   
+        Task<int> SaveChangesAsync();
+        IGenricReposatory<TEntity, TKey> GetReposatory<TEntity, TKey>()
+            where TEntity : BaseEntity<TKey>;
+    }
 }
-

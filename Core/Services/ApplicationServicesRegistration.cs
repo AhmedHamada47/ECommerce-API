@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServicesAbstractions;
 
 namespace Services
 {
@@ -12,7 +8,7 @@ namespace Services
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Services.Assembly).Assembly);
-            services.AddScoped<IServiceManger, ServiceManger>();
+            services.AddScoped<IServiceManager, ServiceManager>();
             return services;
         }
     }

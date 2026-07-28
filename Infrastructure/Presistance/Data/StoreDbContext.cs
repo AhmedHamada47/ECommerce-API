@@ -1,0 +1,26 @@
+using Domain.Identity;
+using Domain.Models;
+using Domain.Models.Order;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace Presistance.Data
+{
+    public class StoreDbContext : IdentityDbContext<AppUser>
+    {
+        public StoreDbContext(DbContextOptions<StoreDbContext> options) : base(options) { }
+
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<ProductBrand> ProductBrands { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyReference).Assembly);
+        }
+    }
+}

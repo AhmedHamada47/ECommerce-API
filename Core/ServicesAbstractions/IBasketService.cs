@@ -1,9 +1,4 @@
 ﻿using Shared.Dto.Basket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServicesAbstractions
 {
@@ -12,7 +7,5 @@ namespace ServicesAbstractions
         Task<BasketDto> GetAsync(string id);
         Task<BasketDto> UpdateAsync(BasketDto basket);
         Task<bool> DeleteAsync(string id);
-
-
     }
 }

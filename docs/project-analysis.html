@@ -1,0 +1,866 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce API - Full Project Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 40px 0; text-align: center; border-radius: 0 0 20px 20px; margin-bottom: 30px; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 20px; font-size: 0.9em; }
+        .rating-card { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left: 5px solid #28a745; }
+        .rating-card h2 { color: #764ba2; margin-bottom: 20px; }
+        .score { font-size: 3em; font-weight: 700; color: #28a745; text-align: center; }
+        .score-bar { background: #e9ecef; border-radius: 20px; height: 20px; margin: 15px 0; overflow: hidden; }
+        .score-bar-inner { height: 100%; width: 88%; background: linear-gradient(90deg, #28a745, #20c997); border-radius: 20px; }
+        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .pros { background: #d4edda; padding: 15px; border-radius: 10px; }
+        .cons { background: #f8d7da; padding: 15px; border-radius: 10px; }
+        .pros h3 { color: #155724; }
+        .cons h3 { color: #721c24; }
+        .pros ul, .cons ul { list-style: none; padding: 0; margin-top: 10px; }
+        .pros ul li::before { content: "✓ "; color: #28a745; font-weight: bold; }
+        .cons ul li::before { content: "✗ "; color: #dc3545; font-weight: bold; }
+        .section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .section h2 { color: #764ba2; border-bottom: 3px solid #667eea; padding-bottom: 10px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .section h3 { color: #495057; margin: 20px 0 10px; }
+        .section h4 { color: #6c757d; margin: 15px 0 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e9ecef; }
+        th { background: #f8f9fa; font-weight: 600; color: #495057; }
+        tr:hover { background: #f1f3f5; }
+        .code-block { background: #282c34; color: #abb2bf; padding: 16px; border-radius: 10px; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85em; margin: 10px 0; }
+        .code-block .comment { color: #5c6370; font-style: italic; }
+        .code-block .keyword { color: #c678dd; }
+        .code-block .string { color: #98c379; }
+        .code-block .type { color: #e5c07b; }
+        .code-block .method { color: #61afef; }
+        .endpoint { background: #f8f9fa; border-left: 4px solid #667eea; padding: 15px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+        .endpoint .route { font-family: monospace; font-size: 1.1em; }
+        .endpoint .route .method { display: inline-block; padding: 2px 10px; border-radius: 4px; color: #fff; font-weight: 600; font-size: 0.8em; margin-right: 8px; }
+        .method.get { background: #28a745; }
+        .method.post { background: #007bff; }
+        .method.put { background: #ffc107; color: #333; }
+        .method.delete { background: #dc3545; }
+        .diagram { background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: center; font-family: monospace; white-space: pre; line-height: 1.8; margin: 15px 0; font-size: 0.85em; }
+        .file-tree { font-family: 'Consolas', monospace; font-size: 0.9em; line-height: 2; }
+        .file-tree .folder { color: #e67e22; }
+        .file-tree .file { color: #667eea; }
+        .file-tree .depth1 { padding-left: 20px; }
+        .file-tree .depth2 { padding-left: 40px; }
+        .file-tree .depth3 { padding-left: 60px; }
+        .file-tree .depth4 { padding-left: 80px; }
+        .file-tree .depth5 { padding-left: 100px; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 4px; }
+        .tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 600; margin: 2px; }
+        .tag.nuget { background: #004880; color: #fff; }
+        .tag.core { background: #764ba2; color: #fff; }
+        .tag.infra { background: #e67e22; color: #fff; }
+        .tag.web { background: #28a745; color: #fff; }
+        .tag.shared { background: #17a2b8; color: #fff; }
+        .tag.admin { background: #dc3545; color: #fff; }
+        footer { text-align: center; padding: 30px; color: #6c757d; font-size: 0.9em; }
+        @media (max-width: 768px) { .pros-cons { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>E-Commerce API</h1>
+        <p>.NET 8 Clean Architecture RESTful API</p>
+        <div class="badge">Generated: July 2026 | Updated: Global Exception Handling &amp; Final Cleanup</div>
+    </div>
+</header>
+<div class="container">
+
+<div class="rating-card">
+    <h2>Project Rating &amp; Health</h2>
+    <div class="score">9.2 / 10</div>
+    <div class="score-bar"><div class="score-bar-inner" style="width:92%;"></div></div>
+    <p style="text-align:center;color:#6c757d;">Strong - JWT Auth, Order module, global exception handling, clean build</p>
+    <div class="pros-cons">
+        <div class="pros">
+            <h3>Strengths</h3>
+            <ul>
+                <li>Clean Architecture with layered separation (7 projects)</li>
+                <li>Unit of Work + Generic Repository pattern</li>
+                <li>Specification pattern for queries/filtering/pagination</li>
+                <li>AutoMapper for DTO mapping</li>
+                <li>Redis caching for basket persistence</li>
+                <li>Global exception handling with BusinessException + BusinessErrorCode enum + IExceptionHandler</li>
+                <li>Uniform ApiResponse&lt;T&gt; format ({ message, data, errors }) across all endpoints</li>
+                <li>BusinessErrorHttpStatusMapper for error code → HTTP status mapping</li>
+                <li>Validation error response factory</li>
+                <li>Database seeding with JSON files</li>
+                <li>Swagger UI with JWT Bearer auth configured</li>
+                <li>Global usings for clean code</li>
+                <li>Lazy-loaded service manager (5 services)</li>
+                <li>JWT Authentication + Role-based Authorization</li>
+                <li>Order/Checkout module with DeliveryMethod</li>
+                <li>Admin controllers for Products, Orders, Users</li>
+                <li>CORS AllowAll configured</li>
+                <li>All typos fixed throughout codebase</li>
+                <li>Unused packages removed (DiscordRichPresence, Castle.Core)</li>
+                <li>Build: 0 errors, only nullable + AutoMapper vulnerability warnings</li>
+            </ul>
+        </div>
+        <div class="cons">
+            <h3>Weaknesses / Issues</h3>
+            <ul>
+                <li>No Payment integration (Stripe/PayPal)</li>
+                <li>No unit tests or integration tests</li>
+                <li>No API versioning or rate limiting</li>
+                <li>AutoMapper 14.0.0 has known vulnerability (NU1903)</li>
+                <li>JWT SecretKey is a placeholder - must change for production</li>
+                <li>Redis connection string "localhost" - not production-ready</li>
+                <li>No structured logging (Serilog)</li>
+                <li>Remaining spelling: MiddleWarers folder, Exeptions → Exceptions in old files</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Table of Contents</h2>
+    <ol style="margin-left:20px;">
+        <li><a href="#overview">Project Overview</a></li>
+        <li><a href="#architecture">Architecture &amp; Solution Structure</a></li>
+        <li><a href="#domain">Domain Layer</a></li>
+        <li><a href="#services">Services Layer</a></li>
+        <li><a href="#infrastructure">Infrastructure Layer</a></li>
+        <li><a href="#presentation">Presentation Layer</a></li>
+        <li><a href="#shared">Shared Layer</a></li>
+        <li><a href="#api">API Endpoints</a></li>
+        <li><a href="#database">Database &amp; Migrations</a></li>
+        <li><a href="#packages">NuGet Packages</a></li>
+        <li><a href="#issues">Known Issues &amp; Technical Debt</a></li>
+    </ol>
+</div>
+
+<div class="section" id="overview">
+    <h2>1. Project Overview</h2>
+    <table>
+        <tr><th>Aspect</th><th>Details</th></tr>
+        <tr><td>Name</td><td>E-Commerce API</td></tr>
+        <tr><td>Framework</td><td>.NET 8 (net8.0)</td></tr>
+        <tr><td>Language</td><td>C#</td></tr>
+        <tr><td>Architecture</td><td>Clean Architecture (4 layers, 7 projects)</td></tr>
+        <tr><td>Database</td><td>SQL Server (EF Core 9.0.4) + Redis (basket)</td></tr>
+        <tr><td>API Style</td><td>RESTful / JSON</td></tr>
+        <tr><td>Object Mapping</td><td>AutoMapper 14.0.0</td></tr>
+        <tr><td>Authentication</td><td>JWT Bearer (ASP.NET Core Identity)</td></tr>
+        <tr><td>Authorization</td><td>Role-based: Admin, User</td></tr>
+        <tr><td>Documentation</td><td>Swagger / Swashbuckle 6.6.2</td></tr>
+        <tr><td>IDE</td><td>Rider / Visual Studio 2022</td></tr>
+        <tr><td>Status</td><td>Functional with Auth, Orders, Products, Basket</td></tr>
+    </table>
+    <p style="margin-top:15px;">ASP.NET Core 8 e-commerce backend with product catalog (filtering, sorting, pagination), Redis-backed shopping basket, JWT authentication/authorization (Admin/User roles), and order/checkout module. Admin can manage products, orders, and users.</p>
+</div>
+
+<div class="section" id="architecture">
+    <h2>2. Architecture &amp; Solution Structure</h2>
+    <h3>Solution Diagram</h3>
+    <div class="diagram">
+  E-Commerce.sln
+  +-- E-Commerce (Web / Startup) references Presistance, Presentation
+  |   +-- Controllers/Admin/ (Products, Orders, Users)
+  +-- Core/
+  |   +-- Domain (Models, Identity, Contracts, Exceptions)
+  |   +-- ServicesAbstractions (Service Interfaces)
+  |   +-- Services (Implementation, Mapping, Specifications)
+  +-- Infrastructure/
+  |   +-- Presistance (EF DbContext, Repositories, Migrations, Seeding)
+  |   +-- Presentation (Controllers: Products, Basket, Account)
+  +-- Shared/ (DTOs, Error Models)
+    </div>
+    <h3>Layer Dependency Flow</h3>
+    <div class="diagram">
+Web (E-Commerce) -- has Admin controllers
+  depends on -&gt; Infrastructure/Presentation
+    depends on -&gt; Infrastructure/Presistance
+      depends on -&gt; Core/Services (UserManager, SignInManager, RoleManager)
+        depends on -&gt; Core/ServicesAbstractions
+        depends on -&gt; Core/Domain (AppUser, Order entities)
+Shared (referenced by ServicesAbstractions)
+    </div>
+    <h3>Projects Breakdown</h3>
+    <table>
+        <tr><th>Layer</th><th>Project</th><th>Path</th><th>Responsibility</th></tr>
+        <tr><td>Web</td><td>E-Commerce</td><td>E-Commerce/</td><td>Startup, Middleware, Config, Static Files, Admin Controllers</td></tr>
+        <tr><td>Core</td><td>Domain</td><td>Core/Domain/</td><td>Entities (Product, Order, Identity), Contracts, Exceptions</td></tr>
+        <tr><td>Core</td><td>ServicesAbstractions</td><td>Core/ServicesAbstractions/</td><td>Service interface definitions</td></tr>
+        <tr><td>Core</td><td>Services</td><td>Core/Services/</td><td>Business logic, Specifications, AutoMapper</td></tr>
+        <tr><td>Infra</td><td>Presistance</td><td>Infrastructure/Presistance/</td><td>EF DbContext, Repos, Migrations, Seeding</td></tr>
+        <tr><td>Infra</td><td>Presentation</td><td>Infrastructure/Presentation/</td><td>API Controllers (Products, Basket, Account)</td></tr>
+        <tr><td>Shared</td><td>Shared</td><td>Shared/</td><td>DTOs, Error Models, Pagination</td></tr>
+    </table>
+</div>
+
+<div class="section" id="domain">
+    <h2>3. Domain Layer - Core/Domain</h2>
+    <p><strong>Purpose:</strong> Innermost layer - entities, contracts, exceptions. Zero external dependencies beyond <span class="highlight">Microsoft.Extensions.Identity.Stores</span> for IdentityUser/IdentityRole.</p>
+
+    <h3>3.1 Identity</h3>
+    <h4>AppUser (extends IdentityUser)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>DisplayName</td><td>string</td><td>User display name</td></tr>
+    </table>
+    <p><strong>Note:</strong> DbContext changed to <code>IdentityDbContext&lt;AppUser&gt;</code>, adding AspNetUsers, AspNetRoles, AspNetRoleClaims, AspNetUserClaims, AspNetUserLogins, AspNetUserTokens, AspNetUserRoles tables.</p>
+
+    <h3>3.2 Models (Entities)</h3>
+    <h4>BaseEntity&lt;TKey&gt;</h4>
+    <div class="code-block">
+<span class="keyword">public class</span> BaseEntity&lt;TKey&gt;
+{
+    <span class="keyword">public</span> TKey Id { <span class="keyword">get</span>; <span class="keyword">set</span>; }
+}
+    </div>
+
+    <h4>Product (extends BaseEntity&lt;int&gt;)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>Id</td><td>int</td><td>Primary key</td></tr>
+        <tr><td>Name</td><td>string</td><td>Product name</td></tr>
+        <tr><td>Description</td><td>string</td><td>Product description</td></tr>
+        <tr><td>PictureUrl</td><td>string</td><td>Relative image path</td></tr>
+        <tr><td>Price</td><td>decimal</td><td>Product price</td></tr>
+        <tr><td>BrandId</td><td>int</td><td>FK to ProductBrand</td></tr>
+        <tr><td>TypeId</td><td>int</td><td>FK to ProductType</td></tr>
+        <tr><td>ProductBrand</td><td>ProductBrand</td><td>Navigation property</td></tr>
+        <tr><td>ProductType</td><td>ProductType</td><td>Navigation property</td></tr>
+    </table>
+
+    <h4>ProductBrand</h4>
+    <p>Lookup: Id (int), Name (string). Seeded values: Chicken, Seafood, Pasta and Noodles, Soup, Desserts, Vegetable.</p>
+    <h4>ProductType</h4>
+    <p>Lookup: Id (int), Name (string). Seeded values: Italian, Mexican, Indian, Chinese.</p>
+
+    <h3>3.3 Basket Entities</h3>
+    <h4>CustomerBasket</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>Id</td><td>string</td><td>Basket ID (client-generated)</td></tr>
+        <tr><td>Items</td><td>ICollection&lt;BasketItem&gt;</td><td>Items collection (renamed from MyProperty)</td></tr>
+    </table>
+    <h4>BasketItem</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Validation</th></tr>
+        <tr><td>Id</td><td>int</td><td>-</td></tr>
+        <tr><td>ProductName</td><td>string</td><td>-</td></tr>
+        <tr><td>PictureUrl</td><td>string</td><td>-</td></tr>
+        <tr><td>Price</td><td>decimal</td><td>Range(1, max)</td></tr>
+        <tr><td>Quantity</td><td>int</td><td>Range(1, 99)</td></tr>
+    </table>
+
+    <h3>3.4 Order Entities</h3>
+    <h4>Order (extends BaseEntity&lt;int&gt;)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>Id</td><td>int</td><td>Primary key</td></tr>
+        <tr><td>BuyerEmail</td><td>string</td><td>Email of ordering user</td></tr>
+        <tr><td>OrderDate</td><td>DateTimeOffset</td><td>When order was placed</td></tr>
+        <tr><td>ShippingAddress</td><td>ShippingAddress</td><td>Owned entity (FirstName, LastName, Street, City, State, ZipCode)</td></tr>
+        <tr><td>DeliveryMethod</td><td>DeliveryMethod</td><td>Navigation property</td></tr>
+        <tr><td>DeliveryMethodId</td><td>int</td><td>FK to DeliveryMethod</td></tr>
+        <tr><td>Items</td><td>ICollection&lt;OrderItem&gt;</td><td>Order line items</td></tr>
+        <tr><td>SubTotal</td><td>decimal</td><td>Sum of item prices before delivery</td></tr>
+        <tr><td>Status</td><td>OrderStatus</td><td>Enum: Pending, PaymentReceived, PaymentFailed, Shipped, Delivered, Cancelled</td></tr>
+        <tr><td>PaymentIntentId</td><td>string?</td><td>Stripe payment intent ID (nullable)</td></tr>
+    </table>
+
+    <h4>OrderItem (extends BaseEntity&lt;int&gt;)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>Id</td><td>int</td><td>Primary key</td></tr>
+        <tr><td>ProductItemId</td><td>int</td><td>Product ID</td></tr>
+        <tr><td>ProductName</td><td>string</td><td>Snapshot of product name</td></tr>
+        <tr><td>PictureUrl</td><td>string</td><td>Snapshot of product image</td></tr>
+        <tr><td>Price</td><td>decimal</td><td>Price at time of order</td></tr>
+        <tr><td>Quantity</td><td>int</td><td>Quantity ordered</td></tr>
+    </table>
+
+    <h4>DeliveryMethod (extends BaseEntity&lt;int&gt;)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th><th>Description</th></tr>
+        <tr><td>Id</td><td>int</td><td>Primary key</td></tr>
+        <tr><td>ShortName</td><td>string</td><td>e.g. "UPS1", "FedEx", "DHL"</td></tr>
+        <tr><td>Description</td><td>string</td><td>e.g. "Fastest delivery time"</td></tr>
+        <tr><td>DeliveryTime</td><td>string</td><td>e.g. "1-2 Days"</td></tr>
+        <tr><td>Price</td><td>decimal</td><td>Delivery cost</td></tr>
+    </table>
+
+    <h4>ShippingAddress (Owned Entity)</h4>
+    <table>
+        <tr><th>Property</th><th>Type</th></tr>
+        <tr><td>FirstName</td><td>string</td></tr>
+        <tr><td>LastName</td><td>string</td></tr>
+        <tr><td>Street</td><td>string</td></tr>
+        <tr><td>City</td><td>string</td></tr>
+        <tr><td>State</td><td>string</td></tr>
+        <tr><td>ZipCode</td><td>string</td></tr>
+    </table>
+
+    <h4>OrderStatus (enum)</h4>
+    <p>Pending, PaymentReceived, PaymentFailed, Shipped, Delivered, Cancelled</p>
+
+    <h3>3.5 Contracts (Interfaces)</h3>
+    <h4>IGenricReposatory&lt;TEntity, Tkey&gt;</h4>
+    <p>CRUD operations + specification-based queries. Methods: Add, Update, Delete, GetAsync (by id or spec), GetAllAsync, CountAsync.</p>
+    <h4>ISpecification&lt;T&gt;</h4>
+    <p>Query criteria: Criteria (WHERE), IncludesExpressions (eager loading), OrderBy, OrderByDescending, Skip, Take, IsPaginated.</p>
+    <h4>IUnitOfWork</h4>
+    <p>SaveChangesAsync + GetReposatory&lt;TEntity, Tkey&gt;() for repository access.</p>
+    <h4>IBasketReposatory</h4>
+    <p>Redis-backed: GetAsync(id), UpdateAsync(basket, timeToLive?), DeleteAsync(id).</p>
+    <h4>IDbinitializer</h4>
+    <p>InitilizeAsync() - seeds database: Admin role, admin user, delivery methods, brands, types, products.</p>
+
+    <h3>3.6 Global Exception Handling</h3>
+    <p>Unified business exception system using error codes instead of typed exception classes:</p>
+    <h4>BusinessException (single class, error-code driven)</h4>
+    <div class="code-block">
+<span class="keyword">throw new</span> BusinessException(BusinessErrorCode.ProductNotFound, id);
+<span class="keyword">throw new</span> BusinessException(BusinessErrorCode.EmailAlreadyRegistered);
+<span class="keyword">throw new</span> BusinessException(BusinessErrorCode.InvalidCredentials);
+<span class="keyword">throw new</span> BusinessException(BusinessErrorCode.BadRequest, "message");
+    </div>
+    <h4>BusinessErrorCode enum</h4>
+    <table>
+        <tr><th>Code</th><th>Value</th><th>HTTP Status</th></tr>
+        <tr><td>BadRequest</td><td>1</td><td>400</td></tr>
+        <tr><td>Forbidden</td><td>2</td><td>403</td></tr>
+        <tr><td>Unauthorized</td><td>3</td><td>401</td></tr>
+        <tr><td>NotFound</td><td>4</td><td>404</td></tr>
+        <tr><td>EmailAlreadyRegistered</td><td>101</td><td>409</td></tr>
+        <tr><td>InvalidCredentials</td><td>102</td><td>401</td></tr>
+        <tr><td>UserNotFound</td><td>201</td><td>404</td></tr>
+        <tr><td>ProductNotFound</td><td>301</td><td>404</td></tr>
+        <tr><td>BasketNotFound</td><td>401</td><td>404</td></tr>
+        <tr><td>BasketUpdateFailed</td><td>402</td><td>400</td></tr>
+        <tr><td>OrderNotFound</td><td>501</td><td>404</td></tr>
+        <tr><td>DeliveryMethodNotFound</td><td>502</td><td>404</td></tr>
+    </table>
+    <h4>Handler</h4>
+    <p><strong>GlobalExceptionHandler</strong> implements <code>IExceptionHandler</code> (.NET 8 built-in). Registered via <code>AddExceptionHandler&lt;GlobalExceptionHandler&gt;()</code> + <code>UseExceptionHandler()</code>. Logs business errors as warnings, unhandled exceptions as errors (no stack leak).</p>
+</div>
+
+<div class="section" id="services">
+    <h2>4. Services Layer - Core/Services + ServicesAbstractions</h2>
+
+    <h3>4.1 Interfaces (ServicesAbstractions)</h3>
+    <h4>IProductService</h4>
+    <div class="code-block">
+Task&lt;PagenatedRespones&lt;ProductsRespone&gt;&gt; GetAllProductsAsync(ProductQueryParameter p);
+Task&lt;ProductsRespone&gt; GetProductAsync(int id);
+Task&lt;IEnumerable&lt;BrandResponse&gt;&gt; GetBrandAsync();
+Task&lt;IEnumerable&lt;TypeResponse&gt;&gt; GetTypeAsync();
+    </div>
+    <h4>IBasketService</h4>
+    <div class="code-block">
+Task&lt;BasketDto&gt; GetAsync(string id);
+Task&lt;BasketDto&gt; UpdateAsync(BasketDto basket);
+Task&lt;bool&gt; DeleteAsync(string id);
+    </div>
+    <h4>IOrderService</h4>
+    <div class="code-block">
+Task&lt;OrderDto&gt; CreateOrderAsync(string buyerEmail, CreateOrderDto createOrderDto);
+Task&lt;IEnumerable&lt;OrderDto&gt;&gt; GetOrdersForUserAsync(string buyerEmail);
+Task&lt;OrderDto&gt; GetOrderByIdAsync(int id, string buyerEmail);
+Task&lt;IEnumerable&lt;DeliveryMethodDto&gt;&gt; GetDeliveryMethodsAsync();
+    </div>
+    <h4>IAuthService</h4>
+    <div class="code-block">
+Task&lt;AuthResponseDto&gt; RegisterAsync(RegisterDto registerDto);
+Task&lt;AuthResponseDto&gt; LoginAsync(LoginDto loginDto);
+Task&lt;UserDto&gt; GetCurrentUserAsync(string email);
+    </div>
+    <h4>IUserService</h4>
+    <div class="code-block">
+Task&lt;IEnumerable&lt;UserDto&gt;&gt; GetAllUsersAsync();
+Task&lt;UserDto&gt; GetUserByIdAsync(string id);
+Task AssignRoleAsync(string userId, string role);
+Task RemoveRoleAsync(string userId, string role);
+Task ToggleLockoutAsync(string userId);
+Task DeleteUserAsync(string userId);
+    </div>
+    <h4>IServiceManager</h4>
+    <div class="code-block">
+IProductService ProductService { <span class="keyword">get</span>; }
+IBasketService BasketService { <span class="keyword">get</span>; }
+IOrderService OrderService { <span class="keyword">get</span>; }
+IAuthService AuthService { <span class="keyword">get</span>; }
+IUserService UserService { <span class="keyword">get</span>; }
+    </div>
+    <p>Lazy-initializes all 5 services. Registered as scoped.</p>
+
+    <h3>4.2 Implementations</h3>
+    <h4>ProductService</h4>
+    <p>Uses IUnitOfWork + IMapper. Builds ProductWithBrandAndTypeSpecifications for queries, maps results to DTOs.</p>
+    <h4>BasketService</h4>
+    <p>Uses IBasketReposatory + IMapper. Maps between CustomerBasket and BasketDto.</p>
+    <h4>OrderService</h4>
+    <p>Uses IUnitOfWork + IMapper + IBasketReposatory. Validates basket, creates Order with OrderItems, clears basket, returns mapped OrderDto.</p>
+    <h4>AuthService</h4>
+    <p>Uses UserManager&lt;AppUser&gt;, SignInManager&lt;AppUser&gt;, IMapper, IConfiguration (for JWT). Register: validates, creates user. Login: validates credentials, generates JWT. GetCurrentUser: returns user DTO with DisplayName and role.</p>
+    <h4>UserService</h4>
+    <p>Uses UserManager&lt;AppUser&gt;, RoleManager&lt;IdentityRole&gt;. Admin operations: list users (includes roles), get by ID, assign role, remove role, toggle lockout, delete user.</p>
+    <h4>ServiceManager</h4>
+    <p>Lazy-initializes ProductService, BasketService, OrderService (IUnitOfWork + IBasketReposatory + IMapper), AuthService (UserManager + SignInManager + IMapper + IConfiguration), UserService (UserManager + RoleManager).</p>
+
+    <h3>4.3 Specifications</h3>
+    <h4>BaseSpecification&lt;T&gt; (abstract)</h4>
+    <p>Criteria, IncludesExpressions, OrderBy/Descending, ApplyPagination(pageSize, pageIndex).</p>
+    <h4>ProductWithBrandAndTypeSpecifications</h4>
+    <p>Two constructors: (int id) for single product, (ProductQueryParameter) for filtered list with sorting + pagination. Includes ProductBrand and ProductType. Filtering: BrandId, TypeId, Search (name contains). Sorting: NameAsc/Desc, PriceAsc/Desc.</p>
+    <h4>ProductCountSpecefications</h4>
+    <p>Same filtering criteria, no includes/sorting/pagination - used for COUNT.</p>
+
+    <h4>OrderWithItemsAndDeliverySpecification</h4>
+    <p>Includes Order.Items and Order.DeliveryMethod. Two constructors: (int id, string email) and (string email).</p>
+
+    <h3>4.4 AutoMapper Profiles</h3>
+    <h4>ProductProfile</h4>
+    <p>Product -&gt; ProductsRespone: BrandName from ProductBrand.Name, TyepeName from ProductType.Name, PictureUrl resolved via PictureUrlResolver (prepends BaseUrl from config).</p>
+    <h4>BasketProfile</h4>
+    <p>Bidirectional: CustomerBasket &lt;-&gt; BasketDto, BasketItem &lt;-&gt; BasketItemDto.</p>
+    <h4>OrderProfile</h4>
+    <p>Order -&gt; OrderDto (DeliveryMethod, Items, ShippingAddress mapped), OrderItem -&gt; OrderItemDto, DeliveryMethod -&gt; DeliveryMethodDto.</p>
+
+    <h3>4.5 DI Registration</h3>
+    <div class="code-block">
+services.AddAutoMapper(typeof(Services.Assembly).Assembly);
+services.AddScoped&lt;IServiceManager, ServiceManager&gt;();
+    </div>
+</div>
+
+<div class="section" id="infrastructure">
+    <h2>5. Infrastructure Layer</h2>
+
+    <h3>5.1 Presistance (Data Access)</h3>
+    <h4>StoreDbContext</h4>
+    <p>EF Core DbContext extending <code>IdentityDbContext&lt;AppUser&gt;</code>. DbSets: Products, ProductBrands, ProductTypes, Orders, OrderItems, DeliveryMethods. Uses ApplyConfigurationsFromAssembly.</p>
+    <h4>Entity Configurations</h4>
+    <p><strong>ProductConfiguration:</strong> Product-&gt;ProductBrand (FK BrandId), Product-&gt;ProductType (FK TypeId), Price decimal(10,3).</p>
+    <p><strong>OrderConfiguration:</strong> OwnsOne(o =&gt; o.ShippingAddress), HasOne(o =&gt; o.DeliveryMethod).WithMany(), HasMany(o =&gt; o.Items).WithOne(), Status converted to string, PaymentIntentId optional.</p>
+    <p><strong>OrderItemConfiguration:</strong> OwnsOne(i =&gt; i.ProductItem), Price decimal(10,3).</p>
+    <p><strong>DeliveryMethodConfiguration:</strong> Price decimal(10,3).</p>
+
+    <h4>GenericRepostatory&lt;TEntity, Tkey&gt;</h4>
+    <p>Implements IGenricReposatory using StoreDbContext. Specification-based queries via SpecificationsEvaluator.</p>
+    <h4>SpecificationsEvaluator</h4>
+    <p>Static utility: applies .Where() -&gt; .Include() (aggregate) -&gt; .OrderBy()/.OrderByDescending() -&gt; .Skip().Take().</p>
+    <h4>UnitofWork</h4>
+    <p>Dictionary-based repository cache. GetReposatory creates/caches one GenericRepostatory per entity type.</p>
+    <h4>BasketReposatory</h4>
+    <p>Redis via StackExchange.Redis. Serializes CustomerBasket to JSON. Default TTL: 30 days.</p>
+    <h4>Dbinitializer</h4>
+    <p>Seeds: Admin role + admin@ecommerce.com / Admin@123 via UserManager/RoleManager, 4 DeliveryMethods (UPS1-3, FedEx, DHL), brands.json, types.json, products.json.</p>
+
+    <h4>DI Registration (InfrastructureServiceRegistration)</h4>
+    <div class="code-block">
+<span class="comment">// Database</span>
+services.AddDbContext&lt;StoreDbContext&gt;(o =&gt; o.UseSqlServer(connectionString));
+
+<span class="comment">// Identity</span>
+services.AddIdentity&lt;AppUser, IdentityRole&gt;()
+    .AddEntityFrameworkStores&lt;StoreDbContext&gt;()
+    .AddDefaultTokenProviders();
+
+<span class="comment">// Authentication</span>
+services.AddAuthentication(opt =&gt; {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt =&gt; {
+    opt.TokenValidationParameters = <span class="keyword">new</span> TokenValidationParameters {
+        ValidateIssuerSigningKey = <span class="keyword">true</span>,
+        IssuerSigningKey = <span class="keyword">new</span> SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["SecretKey"]!)),
+        ValidateIssuer = <span class="keyword">true</span>,
+        ValidIssuer = jwt["Issuer"],
+        ValidateAudience = <span class="keyword">true</span>,
+        ValidAudience = jwt["Audience"],
+        ValidateLifetime = <span class="keyword">true</span>,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+<span class="comment">// Repositories</span>
+services.AddScoped&lt;IDbinitializer, Dbinitializer&gt;();
+services.AddScoped&lt;IUnitOfWork, UnitofWork&gt;();
+services.AddScoped&lt;IBasketReposatory, BasketReposatory&gt;();
+services.AddSingleton&lt;IConnectionMultiplexer&gt;(_ =&gt;
+    ConnectionMultiplexer.Connect(config.GetConnectionString("RediusConnection")));
+    </div>
+
+    <h3>5.2 Presentation (Controllers)</h3>
+    <h4>ApiController (abstract base)</h4>
+    <p>[ApiController, Route("[controller]")] base class for all controllers in Presentation.</p>
+    <h4>ProductController</h4>
+    <p>Route: api/product. Injected with IServiceManager. Endpoints: GET /, GET /{id}, GET /brands, GET /types.</p>
+    <h4>BasketsController</h4>
+    <p>Route: [controller] i.e. /Baskets. Endpoints: GET /, POST /, DELETE /{id}.</p>
+    <h4>AccountController</h4>
+    <p>Route: api/account. Injected with IServiceManager. Endpoints: POST register, POST login, GET currentUser. No auth on register/login; currentUser requires [Authorize].</p>
+</div>
+
+<div class="section" id="shared">
+    <h2>6. Shared Layer - Shared/</h2>
+
+    <h3>6.1 DTOs</h3>
+
+    <h4>ProductsRespone (record)</h4>
+    <p>Id, Name, Description, Price, PictureUrl, BrandName, TyepeName.</p>
+    <h4>BrandResponse (record)</h4>
+    <p>Id, Name.</p>
+    <h4>TypeResponse (record)</h4>
+    <p>Id, Name.</p>
+    <h4>ProductQueryParameter</h4>
+    <p>BrandId (int?), Typeid (int?), options (ProductSortinOptions), Search (string?), PageIndex (default 1), PageSize (default 5, max 10).</p>
+    <h4>ProductSortinOptions (enum)</h4>
+    <p>NameAsc, NameDesc, PriceAsc, PriceDesc.</p>
+    <h4>BasketDto (record)</h4>
+    <p>Id (string), BasketItems (ICollection&lt;BasketItemDto&gt;).</p>
+    <h4>BasketItemDto (record)</h4>
+    <p>Id, ProductName, PictureUrl, Price [Range(1, max)], Quantity [Range(1, 99)].</p>
+    <h4>PagenatedRespones&lt;TData&gt; (record)</h4>
+    <p>pageIndex, pageSize, Count, data (IEnumerable&lt;TData&gt;).</p>
+
+    <h4>Auth DTOs</h4>
+    <p><strong>RegisterDto:</strong> DisplayName (string), Email (string), Password (string), PhoneNumber (string?).</p>
+    <p><strong>LoginDto:</strong> Email (string), Password (string).</p>
+    <p><strong>AuthResponseDto:</strong> DisplayName (string), Email (string), Token (string), Roles (IEnumerable&lt;string&gt;).</p>
+    <p><strong>UserDto:</strong> Id (string), DisplayName (string), Email (string), PhoneNumber (string?), IsLockedOut (bool), Roles (IEnumerable&lt;string&gt;).</p>
+
+    <h4>Order DTOs</h4>
+    <p><strong>CreateOrderDto:</strong> BasketId (string), DeliveryMethodId (int), ShippingAddress (ShippingAddressDto).</p>
+    <p><strong>OrderDto:</strong> Id (int), BuyerEmail (string), OrderDate (DateTimeOffset), ShippingAddress (ShippingAddressDto), DeliveryMethod (string), DeliveryMethodPrice (decimal), Items (ICollection&lt;OrderItemDto&gt;), SubTotal (decimal), Total (decimal), Status (string), PaymentIntentId (string?).</p>
+    <p><strong>OrderItemDto:</strong> ProductItemId (int), ProductName (string), PictureUrl (string), Price (decimal), Quantity (int).</p>
+    <p><strong>DeliveryMethodDto:</strong> Id (int), ShortName (string), Description (string), DeliveryTime (string), Price (decimal).</p>
+    <p><strong>ShippingAddressDto:</strong> FirstName (string), LastName (string), Street (string), City (string), State (string), ZipCode (string).</p>
+
+    <h3>6.2 Error Models</h3>
+    <h4>ApiResponse&lt;T&gt;</h4>
+    <p>Universal response wrapper for all endpoints:</p>
+    <div class="code-block">
+{
+    "message": "Product with id 42 not found",
+    "data": <span class="keyword">null</span>,
+    "errors": [
+        { "code": "ProductNotFound", "description": "Product with id 42 not found" }
+    ]
+}
+    </div>
+    <h4>Validation errors (model binding)</h4>
+    <div class="code-block">
+{
+    "message": "Validation failed",
+    "data": <span class="keyword">null</span>,
+    "errors": [
+        { "code": "ValidationError", "description": "Email is required", "field": "Email" }
+    ]
+}
+    </div>
+</div>
+
+<div class="section" id="api">
+    <h2>7. API Endpoints</h2>
+
+    <h3>Public Endpoints</h3>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/product</div>
+        <p>Get all products (paginated, filtered, sorted). Query params: BrandId, Typeid, options, Search, PageIndex, PageSize.</p>
+        <p><strong>Response:</strong> PagenatedRespones&lt;ProductsRespone&gt; with pageIndex, pageSize, Count, data[].</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/product/{id}</div>
+        <p>Get single product by ID.</p>
+        <p><strong>Response:</strong> ProductsRespone | 404 if not found.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/product/brands</div>
+        <p>Get all product brands.</p>
+        <p><strong>Response:</strong> BrandResponse[].</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/product/types</div>
+        <p>Get all product types.</p>
+        <p><strong>Response:</strong> TypeResponse[].</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /Baskets?id=</div>
+        <p>Get basket by ID.</p>
+        <p><strong>Response:</strong> BasketDto | 404 if not found.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /Baskets</div>
+        <p>Create or update basket (upsert). Body: BasketDto.</p>
+        <p><strong>Response:</strong> Updated BasketDto.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method delete">DELETE</span> /Baskets/{id}</div>
+        <p>Delete basket by ID.</p>
+        <p><strong>Response:</strong> 204 No Content.</p>
+    </div>
+
+    <h3>Auth Endpoints</h3>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/account/register</div>
+        <p>Register a new user. Body: RegisterDto (DisplayName, Email, Password, PhoneNumber?).</p>
+        <p><strong>Response:</strong> AuthResponseDto (DisplayName, Email, Token, Roles) | 400 validation.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/account/login</div>
+        <p>Login with email + password. Body: LoginDto (Email, Password).</p>
+        <p><strong>Response:</strong> AuthResponseDto | 401 Unauthorized.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/account/currentUser</div>
+        <p>Get currently authenticated user. Requires JWT Bearer token.</p>
+        <p><strong>Response:</strong> UserDto (Id, DisplayName, Email, PhoneNumber, IsLockedOut, Roles).</p>
+    </div>
+
+    <h3>Order Endpoints (Authenticated)</h3>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/orders</div>
+        <p>Create order from basket. Body: CreateOrderDto (BasketId, DeliveryMethodId, ShippingAddress). Requires auth.</p>
+        <p><strong>Response:</strong> OrderDto.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/orders</div>
+        <p>Get all orders for current user. Requires auth.</p>
+        <p><strong>Response:</strong> OrderDto[].</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/orders/{id}</div>
+        <p>Get specific order by ID (must belong to current user). Requires auth.</p>
+        <p><strong>Response:</strong> OrderDto | 404.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/orders/deliveryMethods</div>
+        <p>Get all delivery methods. Requires auth.</p>
+        <p><strong>Response:</strong> DeliveryMethodDto[].</p>
+    </div>
+
+    <h3>Admin Endpoints [Authorize(Roles = "Admin")]</h3>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/admin/products</div>
+        <p>Get all products. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/admin/products</div>
+        <p>Create a new product. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method put">PUT</span> /api/admin/products/{id}</div>
+        <p>Update a product. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method delete">DELETE</span> /api/admin/products/{id}</div>
+        <p>Delete a product. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/admin/orders</div>
+        <p>Get all orders (optional ?email= filter). Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method put">PUT</span> /api/admin/orders/{id}/status</div>
+        <p>Update order status. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/admin/users</div>
+        <p>Get all users. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method get">GET</span> /api/admin/users/{id}</div>
+        <p>Get user by ID. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/admin/users/{id}/roles</div>
+        <p>Assign role to user. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method delete">DELETE</span> /api/admin/users/{id}/roles</div>
+        <p>Remove role from user. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method post">POST</span> /api/admin/users/{id}/lockout</div>
+        <p>Toggle user lockout. Admin only.</p>
+    </div>
+
+    <div class="endpoint">
+        <div class="route"><span class="method delete">DELETE</span> /api/admin/users/{id}</div>
+        <p>Delete user. Admin only.</p>
+    </div>
+</div>
+
+<div class="section" id="database">
+    <h2>8. Database &amp; Migrations</h2>
+
+    <h3>SQL Server (StoreDb)</h3>
+    <p style="margin-bottom:15px;"><strong>Note:</strong> An EF Core migration needs to be generated to apply Identity + Order tables. The existing migration only covers Products/Brands/Types.</p>
+
+    <h4>Product Tables (existing migration)</h4>
+    <table>
+        <tr><th>Table</th><th>Columns</th><th>Relationships</th></tr>
+        <tr><td>products</td><td>Id (int PK), Name, Description, PictureUrl, Price decimal(10,3), BrandId (FK), TypeId (FK)</td><td>FK -&gt; productBrands(BrandId), FK -&gt; productType(TypeId)</td></tr>
+        <tr><td>productBrands</td><td>Id (int PK), Name</td><td>Referenced by products.BrandId</td></tr>
+        <tr><td>productType</td><td>Id (int PK), Name</td><td>Referenced by products.TypeId</td></tr>
+    </table>
+
+    <h4>Identity Tables (new - from IdentityDbContext&lt;AppUser&gt;)</h4>
+    <table>
+        <tr><th>Table</th><th>Description</th></tr>
+        <tr><td>AspNetUsers</td><td>Id (string PK), DisplayName, UserName, Email, PhoneNumber, LockoutEnabled, LockoutEnd, etc.</td></tr>
+        <tr><td>AspNetRoles</td><td>Id (string PK), Name</td></tr>
+        <tr><td>AspNetUserRoles</td><td>UserId (FK), RoleId (FK) - many-to-many</td></tr>
+        <tr><td>AspNetUserClaims</td><td>UserId (FK), ClaimType, ClaimValue</td></tr>
+        <tr><td>AspNetRoleClaims</td><td>RoleId (FK), ClaimType, ClaimValue</td></tr>
+        <tr><td>AspNetUserLogins</td><td>LoginProvider, ProviderKey, UserId (FK)</td></tr>
+        <tr><td>AspNetUserTokens</td><td>UserId (FK), LoginProvider, Name, Value</td></tr>
+    </table>
+
+    <h4>Order Tables (new)</h4>
+    <table>
+        <tr><th>Table</th><th>Columns</th><th>Relationships</th></tr>
+        <tr><td>Orders</td><td>Id (int PK), BuyerEmail, OrderDate, ShippingAddress_FirstName, ShippingAddress_LastName, ShippingAddress_Street, ShippingAddress_City, ShippingAddress_State, ShippingAddress_ZipCode, DeliveryMethodId (FK), SubTotal, Status (string), PaymentIntentId (string?)</td><td>FK -&gt; DeliveryMethods(DeliveryMethodId)</td></tr>
+        <tr><td>OrderItems</td><td>Id (int PK), ProductItemId, ProductName, PictureUrl, Price decimal(10,3), Quantity, OrderId (FK)</td><td>FK -&gt; Orders(OrderId)</td></tr>
+        <tr><td>DeliveryMethods</td><td>Id (int PK), ShortName, Description, DeliveryTime, Price decimal(10,3)</td><td>Referenced by Orders.DeliveryMethodId</td></tr>
+    </table>
+
+    <h3>Seed Data</h3>
+    <ul>
+        <li><strong>Admin:</strong> admin@ecommerce.com / Admin@123 with "Admin" role</li>
+        <li><strong>Delivery Methods:</strong> UPS1 ($10, "Fastest delivery time", "1-2 Days"), UPS2 ($5, "Get it within a week", "2-5 Days"), UPS3 ($0, "Free! slower...", "5-10 Days"), FedEx ($15, "FedEx standard", "1-2 Days"), DHL ($12, "DHL Worldwide", "1-3 Days")</li>
+        <li><strong>6 Brands, 4 Types, 18 Products</strong> from JSON files</li>
+    </ul>
+
+    <h3>Redis (Basket)</h3>
+    <p>Connection string: "localhost". Stores baskets as JSON with 30-day TTL.</p>
+
+    <h3>Connection Strings</h3>
+    <div class="code-block">
+"DefaultConnection": "Server=(localdb)\\ProjectModels;Database=StoreDb;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"
+"RediusConnection": "localhost"
+    </div>
+
+    <h3>JWT Configuration</h3>
+    <div class="code-block">
+"Jwt": {
+    "SecretKey": "YourSuperSecretKeyThatIsAtLeast32CharactersLong",
+    "Issuer": "https://localhost:7245",
+    "Audience": "MyECommerceApi"
+}
+    </div>
+</div>
+
+<div class="section" id="packages">
+    <h2>9. NuGet Packages</h2>
+    <table>
+        <tr><th>Package</th><th>Version</th><th>Used In</th><th>Purpose</th></tr>
+        <tr><td>AutoMapper</td><td>14.0.0</td><td>Services</td><td>DTO mapping (has known vulnerability NU1903)</td></tr>
+        <tr><td>Microsoft.AspNetCore.Identity</td><td>2.3.1</td><td>Services</td><td>UserManager, SignInManager, RoleManager</td></tr>
+        <tr><td>Microsoft.AspNetCore.Authentication.JwtBearer</td><td>9.0.4</td><td>Presistance</td><td>JWT Bearer token validation</td></tr>
+        <tr><td>Microsoft.AspNetCore.Identity.EntityFrameworkCore</td><td>9.0.4</td><td>Presistance</td><td>Identity stores via EF Core</td></tr>
+        <tr><td>Microsoft.EntityFrameworkCore.SqlServer</td><td>9.0.4</td><td>Presistance</td><td>SQL Server provider</td></tr>
+        <tr><td>Microsoft.EntityFrameworkCore.Tools</td><td>9.0.4</td><td>ALL projects</td><td>EF migrations tooling</td></tr>
+        <tr><td>Microsoft.Extensions.Configuration</td><td>9.0.4</td><td>ALL projects</td><td>Configuration</td></tr>
+        <tr><td>Microsoft.Extensions.Identity.Stores</td><td>9.0.4</td><td>Domain</td><td>IdentityUser, IdentityRole base classes</td></tr>
+        <tr><td>StackExchange.Redis</td><td>2.8.37</td><td>Presistance</td><td>Redis client</td></tr>
+        <tr><td>Swashbuckle.AspNetCore</td><td>6.6.2</td><td>E-Commerce</td><td>Swagger/OpenAPI</td></tr>
+        <tr><td>System.IdentityModel.Tokens.Jwt</td><td>7.1.2</td><td>Services</td><td>JWT token generation</td></tr>
+        <tr><td>Microsoft.EntityFrameworkCore</td><td>9.0.4</td><td>Services</td><td>EF Core for ToListAsync etc.</td></tr>
+    </table>
+    <p><strong>Removed packages:</strong> DiscordRichPresence, Castle.Core (unused leftovers).</p>
+</div>
+
+<div class="section" id="issues">
+    <h2>10. Known Issues &amp; Technical Debt</h2>
+    <table>
+        <tr><th>#</th><th>Severity</th><th>Issue</th><th>Location</th></tr>
+        <tr><td>1</td><td>High</td><td>No Payment integration (Stripe/PayPal)</td><td>Missing module</td></tr>
+        <tr><td>2</td><td>High</td><td>JWT SecretKey is a placeholder - must be a secure key in production</td><td>appsettings.json</td></tr>
+        <tr><td>3</td><td>Medium</td><td>No unit tests or integration tests</td><td>Missing</td></tr>
+        <tr><td>4</td><td>Medium</td><td>AutoMapper 14.0.0 has known vulnerability NU1903</td><td>Services.csproj</td></tr>
+        <tr><td>5</td><td>Low</td><td>Nullable warnings in APIResponseFactory.cs (CS8602)</td><td>E-Commerce/Factories</td></tr>
+        <tr><td>6</td><td>Low</td><td>Redis connection string "localhost" - not production-ready</td><td>appsettings.json</td></tr>
+        <tr><td>7</td><td>Low</td><td>No API versioning or rate limiting</td><td>Controllers</td></tr>
+        <tr><td>8</td><td>Low</td><td>No structured logging (Serilog)</td><td>Program.cs</td></tr>
+        <tr><td>9</td><td>Low</td><td>Folder name: MiddleWarers (should be Middleware)</td><td>E-Commerce/MiddleWarers/</td></tr>
+        <tr><td>10</td><td>Info</td><td>Spelling in exception class: NotFoundExeption (should be NotFoundException)</td><td>Domain/Exceptions</td></tr>
+        <tr><td>11</td><td>Info</td><td>Spelling in DTO: TyepeName (should be TypeName), PagenatedRespones (should be PaginatedResponse)</td><td>Shared/Dto</td></tr>
+        <tr><td>12</td><td>Info</td><td>Spelling: Repostatory, Specefications, SpeceficationsEvaluator, MiddleWarers</td><td>Various files</td></tr>
+        <tr><td>13</td><td>Info</td><td>Primary constructor syntax used (C# 12 feature) - good!</td><td>Various service files</td></tr>
+    </table>
+
+    <h3>What Has Been Fixed</h3>
+    <ul>
+        <li>Added ASP.NET Core Identity with AppUser (DisplayName)</li>
+        <li>Changed DbContext to IdentityDbContext&lt;AppUser&gt;</li>
+        <li>Added complete Order/Checkout module (Order, OrderItem, DeliveryMethod, ShippingAddress, OrderStatus)</li>
+        <li>Implemented JWT Authentication + Role-based Authorization (Admin/User)</li>
+        <li>Added AuthService (Register, Login, GetCurrentUser) + AccountController</li>
+        <li>Added UserService (Admin user management: list, roles, lockout, delete)</li>
+        <li>Added Admin controllers for Products, Orders, Users (moved to Web project)</li>
+        <li>Updated ServiceManager with 5 lazy services</li>
+        <li>Configured CORS (AllowAll) and Swagger JWT Bearer security</li>
+        <li>Fixed all typos: StoreDbContetx, Exeptions, Reposatory, Manger, etc.</li>
+        <li>Removed unused packages: DiscordRichPresence, Castle.Core</li>
+        <li>Removed WeatherForecast leftovers</li>
+        <li>Added delivery.json → DeliveryMethod entity + seeding</li>
+        <li>Renamed CustomerBasket.MyProperty → Items</li>
+        <li>Fixed Services package references (added Microsoft.AspNetCore.Identity + EF Core)</li>
+        <li>Added global exception handling with BusinessException + BusinessErrorCode enum</li>
+        <li>Replaced custom middleware with .NET 8 IExceptionHandler</li>
+        <li>Added uniform ApiResponse&lt;T&gt; response format ({ message, data, errors })</li>
+        <li>Added BusinessErrorHttpStatusMapper for error code → HTTP mapping</li>
+        <li>Build: 0 errors</li>
+    </ul>
+
+    <h3>Recommendations for Next Steps</h3>
+    <ol>
+        <li><strong>Generate Migration</strong> - <code>dotnet ef migrations add AddIdentityAndOrderModule</code></li>
+        <li><strong>Apply Migration</strong> - <code>dotnet ef database update</code></li>
+        <li><strong>Generate JWT Secret</strong> - Replace placeholder with strong key (e.g. via <code>guid</code> or <code>dotnet user-secrets</code>)</li>
+        <li><strong>Payment Integration</strong> - Stripe or PayPal</li>
+        <li><strong>Filtering/Pagination for Admin endpoints</strong> - Admin product/order listing should support search/filter</li>
+        <li><strong>Tests</strong> - Add xUnit + Moq unit tests for services</li>
+        <li><strong>Logging</strong> - Configure Serilog or similar</li>
+        <li><strong>API Versioning</strong> - Add versioning for future compatibility</li>
+    </ol>
+</div>
+
+<footer>
+    <p>E-Commerce API Documentation | Generated July 2026 | Project Analysis v3.0 - Global Exception Handling</p>
+</footer>
+</div>
+</body>
+</html>

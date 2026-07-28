@@ -7,20 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiscordRichPresence" Version="1.2.1.24" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
+    <ProjectReference Include="..\..\Core\ServicesAbstractions\ServicesAbstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\ServicesAbstractions\ServicesAbstractions.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-	
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
 
 </Project>

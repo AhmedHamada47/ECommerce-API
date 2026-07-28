@@ -1,10 +1,6 @@
-﻿using Domain.Basket;
+﻿using AutoMapper;
+using Domain.Basket;
 using Shared.Dto.Basket;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.MappingProfiles
 {
@@ -12,9 +8,11 @@ namespace Services.MappingProfiles
     {
         public BasketProfile()
         {
-            CreateMap<CustomerBasket, BasketDto>().ReverseMap();
+            CreateMap<CustomerBasket, BasketDto>()
+                .ForMember(d => d.BasketItems, o => o.MapFrom(s => s.Items))
+                .ReverseMap()
+                .ForMember(d => d.Items, o => o.MapFrom(s => s.BasketItems));
             CreateMap<BasketItem, BasketItemDto>().ReverseMap();
-
         }
     }
 }
