@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce API - Project Overview</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --secondary: #7c3aed;
+    --success: #059669;
+    --warning: #d97706;
+    --danger: #dc2626;
+    --dark: #1e293b;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --border: #e2e8f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: var(--dark); background: #f1f5f9; line-height: 1.7; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 60px 0 40px; text-align: center; }
+  .header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+  .header p { font-size: 1.1rem; opacity: 0.9; }
+  .header .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; margin-top: 12px; }
+
+  /* Nav */
+  .toc { background: white; border-radius: 12px; padding: 24px; margin: 30px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .toc h2 { font-size: 1.2rem; margin-bottom: 12px; color: var(--primary); }
+  .toc ul { list-style: none; columns: 2; }
+  .toc li { margin: 4px 0; }
+  .toc a { color: var(--gray); text-decoration: none; font-size: 0.9rem; display: block; padding: 3px 8px; border-radius: 4px; }
+  .toc a:hover { background: var(--light); color: var(--primary); }
+
+  /* Cards */
+  .card { background: white; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .card h2 { font-size: 1.4rem; color: var(--primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+  .card h3 { font-size: 1.1rem; color: var(--dark); margin: 20px 0 10px; }
+  .card h4 { font-size: 0.95rem; color: var(--gray); margin: 14px 0 6px; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--light); font-weight: 600; color: var(--gray); font-size: 0.8rem; text-transform: uppercase; }
+  tr:hover { background: #f8fafc; }
+
+  /* Code */
+  code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; color: var(--danger); }
+  pre { background: #1e293b; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; margin: 12px 0; }
+
+  /* Method Badges */
+  .method { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: white; }
+  .get { background: var(--primary); }
+  .post { background: var(--success); }
+  .put { background: var(--warning); }
+  .delete { background: var(--danger); }
+
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; margin-left: 6px; }
+  .tag-auth { background: #dbeafe; color: var(--primary); }
+  .tag-admin { background: #fce7f3; color: #be185d; }
+  .tag-public { background: #d1fae5; color: var(--success); }
+
+  /* Flow Diagram */
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 16px 0; padding: 16px; background: var(--light); border-radius: 8px; }
+  .flow-step { background: white; border: 2px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 600; }
+  .flow-arrow { color: var(--gray); font-size: 1.2rem; }
+
+  .diagram { background: var(--light); border-radius: 8px; padding: 20px; margin: 12px 0; font-family: monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre; }
+
+  .info-box { background: #eff6ff; border-left: 4px solid var(--primary); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 0.9rem; }
+  .info-box.warn { background: #fffbeb; border-left-color: var(--warning); }
+  .info-box.success { background: #ecfdf5; border-left-color: var(--success); }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.8rem; }
+    .toc ul { columns: 1; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>E-Commerce API</h1>
+    <p>Complete Project Overview &amp; API Reference</p>
+    <span class="badge">.NET 9 &bull; Clean Architecture &bull; JWT Auth &bull; EF Core &bull; Redis</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><a href="#architecture">1. Architecture &amp; Layers</a></li>
+    <li><a href="#techstack">2. Technology Stack</a></li>
+    <li><a href="#auth">3. Authentication Flow</a></li>
+    <li><a href="#endpoints">4. API Endpoints</a></li>
+    <li><a href="#flows">5. Business Flows</a></li>
+    <li><a href="#errors">6. Error Handling</a></li>
+    <li><a href="#database">7. Database Schema</a></li>
+    <li><a href="#seeded">8. Seeded Data</a></li>
+    <li><a href="#roles">9. User Roles &amp; Permissions</a></li>
+  </ul>
+</div>
+
+<!-- 1. ARCHITECTURE -->
+<div class="card" id="architecture">
+  <h2>1. Architecture &amp; Layers</h2>
+  <p>The project follows <strong>Clean Architecture</strong> with 4 layers spread across 7 projects:</p>
+
+  <table>
+    <tr><th>Layer</th><th>Project</th><th>Purpose</th></tr>
+    <tr><td><strong>Core (Domain)</strong></td><td><code>Domain</code></td><td>Entities, enums, exceptions, contracts (interfaces), basket models, Identity user</td></tr>
+    <tr><td><strong>Core (Application)</strong></td><td><code>Services</code></td><td>Business logic: AuthService, OrderService, BasketService, ProductService, UserService + AutoMapper profiles + Specification pattern</td></tr>
+    <tr><td><strong>Core (Abstractions)</strong></td><td><code>ServicesAbstractions</code></td><td>Service interfaces (IAuthService, IOrderService, etc.)</td></tr>
+    <tr><td><strong>Infrastructure (Persistence)</strong></td><td><code>Presistance</code></td><td>DbContext, EF configurations, migrations, repositories (GenericRepository, UnitOfWork, BasketRepository), DbInitializer, Identity/JWT registration</td></tr>
+    <tr><td><strong>Infrastructure (Presentation)</strong></td><td><code>Presentation</code></td><td>Public API controllers (Account, Product, Basket, Orders)</td></tr>
+    <tr><td><strong>Shared</strong></td><td><code>Shared</code></td><td>DTOs (all features), ApiResponse error model, PaginatedResponse</td></tr>
+    <tr><td><strong>Startup</strong></td><td><code>E-Commerce</code></td><td>Program.cs, middleware (GlobalExceptionHandler), Admin controllers, factories, launch settings</td></tr>
+  </table>
+
+  <div class="diagram">
+  Client (Browser / Postman)
+         |
+    [HTTP Request]
+         |
+  +-- Program.cs (Middleware Pipeline) ---+
+  |  ExceptionHandler -> CORS -> Auth ->  |
+  |  Authorization -> Controllers         |
+  +---------------------------------------+
+         |
+  +-- Controllers (Presentation) ---------+
+  |  Map DTOs &lt;-&gt; call Services         |
+  +---------------------------------------+
+         |
+  +-- Services (Application) -------------+
+  |  Business logic, validation, mapping  |
+  |  Uses IUnitOfWork, IBasketRepository  |
+  +---------------------------------------+
+         |
+  +-- Infrastructure (Persistence) -------+
+  |  EF Core DbContext, Redis, Migrations |
+  +---------------------------------------+
+         |
+  +-- Database ---------------------------+
+  |  SQL Server (StoreDb) + Redis (Basket)|
+  +---------------------------------------+
+  </div>
+
+  <div class="info-box">
+    <strong>Key Pattern:</strong> The API uses <strong>Repository + UnitOfWork + Specification</strong> patterns for data access, with <strong>AutoMapper</strong> for DTO mapping and <strong>Lazy&lt;T&gt;</strong> service initialization via <code>ServiceManager</code>.
+  </div>
+</div>
+
+<!-- 2. TECH STACK -->
+<div class="card" id="techstack">
+  <h2>2. Technology Stack</h2>
+
+  <table>
+    <tr><th>Technology</th><th>Version</th><th>Usage</th></tr>
+    <tr><td>.NET</td><td>9.0</td><td>Runtime framework</td></tr>
+    <tr><td>ASP.NET Core</td><td>9.0</td><td>Web API, middleware, authentication</td></tr>
+    <tr><td>Entity Framework Core</td><td>9.0.4</td><td>ORM for SQL Server</td></tr>
+    <tr><td>SQL Server (LocalDB)</td><td>-</td><td>Relational database (StoreDb)</td></tr>
+    <tr><td>Redis (StackExchange.Redis)</td><td>2.8.22</td><td>Basket caching (in-memory)</td></tr>
+    <tr><td>AutoMapper</td><td>14.0.0</td><td>Entity &lt;-&gt; DTO mapping</td></tr>
+    <tr><td>ASP.NET Core Identity</td><td>-</td><td>User management, roles, password hashing</td></tr>
+    <tr><td>JWT Bearer</td><td>-</td><td>Token-based authentication</td></tr>
+    <tr><td>Swagger (Swashbuckle)</td><td>7.3.1</td><td>API documentation UI</td></tr>
+  </table>
+</div>
+
+<!-- 3. AUTHENTICATION FLOW -->
+<div class="card" id="auth">
+  <h2>3. Authentication Flow</h2>
+
+  <h3>3.1 Registration</h3>
+  <div class="flow">
+    <span class="flow-step">POST /api/account/register</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">RegisterDto</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Check Duplicate Email</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Create AppUser</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Assign "User" Role</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Generate JWT Token</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Return AuthResponseDto</span>
+  </div>
+
+  <h3>3.2 Login</h3>
+  <div class="flow">
+    <span class="flow-step">POST /api/account/login</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">LoginDto</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Find by Email</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Check Password</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Generate JWT Token</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Return AuthResponseDto</span>
+  </div>
+
+  <h3>3.3 JWT Token Structure</h3>
+  <pre>
+Claims:
+  - NameIdentifier  = User.Id
+  - Email           = User.Email
+  - GivenName       = User.DisplayName
+  - Roles           = User Roles (list)
+
+Signed with: HMAC-SHA256 (SymmetricSecurityKey)
+  Secret Key: from JWT:SecretKey in appsettings.json
+  Valid Issuer: https://localhost:7228
+  Valid Audience: https://localhost:7228
+  Expiration: 7 days
+  </pre>
+
+  <h3>3.4 How to Use</h3>
+  <div class="info-box success">
+    <strong>Register:</strong> POST <code>/api/account/register</code> with <code>{ displayName, email, password }</code><br>
+    <strong>Login:</strong> POST <code>/api/account/login</code> with <code>{ email, password }</code><br>
+    <strong>Use Token:</strong> Add header <code>Authorization: Bearer &lt;token&gt;</code> to authenticated requests
+  </div>
+
+  <h3>3.5 Get Current User</h3>
+  <div class="flow">
+    <span class="flow-step">GET /api/account/currentUser</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">[Authorize]</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Extract userId from JWT</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Return AuthResponseDto</span>
+  </div>
+</div>
+
+<!-- 4. API ENDPOINTS -->
+<div class="card" id="endpoints">
+  <h2>4. Complete API Endpoints Reference</h2>
+
+  <h3>4.1 Public - Products</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Query Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/product</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td><code>brandId</code>, <code>typeId</code>, <code>sortBy</code> (nameAsc, nameDesc, priceAsc, priceDesc), <code>search</code>, <code>pageIndex</code> (default:1), <code>pageSize</code> (default:5, max:10)</td>
+      <td><code>PaginatedResponse&lt;ProductResponse&gt;</code></td>
+      <td>Get paginated, filtered, and sorted product list</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/product/{id}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>-</td>
+      <td><code>ProductResponse</code></td>
+      <td>Get a single product by ID</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/product/brands</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>-</td>
+      <td><code>IEnumerable&lt;BrandResponse&gt;</code></td>
+      <td>Get all product brands</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/product/types</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>-</td>
+      <td><code>IEnumerable&lt;TypeResponse&gt;</code></td>
+      <td>Get all product types</td>
+    </tr>
+  </table>
+
+  <h3>4.2 Public - Basket (Redis)</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Body / Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/baskets?id={id}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Query: <code>id</code> (string)</td>
+      <td><code>BasketDto</code></td>
+      <td>Get a basket by ID from Redis</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/baskets</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Body: <code>BasketDto</code> (id, basketItems[])</td>
+      <td><code>BasketDto</code></td>
+      <td>Create or update a basket (upsert)</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DEL</span></td>
+      <td><code>/baskets/{id}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Route: <code>id</code> (string)</td>
+      <td><code>204 No Content</code></td>
+      <td>Delete a basket from Redis</td>
+    </tr>
+  </table>
+
+  <h3>4.3 Public - Orders</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Body / Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/orders?email={email}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Query: <code>email</code> (string)</td>
+      <td><code>IEnumerable&lt;OrderDto&gt;</code></td>
+      <td>Get all orders for a user by email</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/orders/{id}?email={email}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Route: <code>id</code> (int), Query: <code>email</code></td>
+      <td><code>OrderDto</code></td>
+      <td>Get a specific order by ID + buyer email</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/orders?email={email}</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>Query: <code>email</code>, Body: <code>CreateOrderDto</code></td>
+      <td><code>OrderDto</code></td>
+      <td>Create order from basket (basketId, deliveryMethodId, shippingAddress)</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/orders/deliveryMethods</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>-</td>
+      <td><code>IEnumerable&lt;DeliveryMethodDto&gt;</code></td>
+      <td>Get all delivery methods with prices</td>
+    </tr>
+  </table>
+
+  <h3>4.4 Public - Account</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Body</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/account/register</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td><code>RegisterDto</code> (displayName, email, password)</td>
+      <td><code>AuthResponseDto</code></td>
+      <td>Register a new user account</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/account/login</code></td>
+      <td><span class="tag tag-public">Public</span></td>
+      <td><code>LoginDto</code> (email, password)</td>
+      <td><code>AuthResponseDto</code></td>
+      <td>Login and receive JWT token</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/account/currentUser</code></td>
+      <td><span class="tag tag-auth">Auth</span></td>
+      <td>-</td>
+      <td><code>AuthResponseDto</code></td>
+      <td>Get current authenticated user info</td>
+    </tr>
+  </table>
+
+  <h3>4.5 Admin - Orders</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/admin/orders?email={email?}</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Optional query: <code>email</code></td>
+      <td><code>IEnumerable&lt;OrderDto&gt;</code></td>
+      <td>Get all orders (optional filter by email)</td>
+    </tr>
+    <tr>
+      <td><span class="method put">PUT</span></td>
+      <td><code>/api/admin/orders/{id}/status</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code>, Body: <code>OrderStatus</code> (Pending, PaymentReceived, PaymentFailed, Shipped, Delivered, Cancelled)</td>
+      <td><code>204 No Content</code></td>
+      <td>Update order status</td>
+    </tr>
+  </table>
+
+  <h3>4.6 Admin - Products</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Body / Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/admin/products</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>-</td>
+      <td><code>IEnumerable&lt;ProductResponse&gt;</code></td>
+      <td>Get all products</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/admin/products</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Body: <code>Product</code></td>
+      <td><code>Product</code> (201 Created)</td>
+      <td>Create a new product</td>
+    </tr>
+    <tr>
+      <td><span class="method put">PUT</span></td>
+      <td><code>/api/admin/products/{id}</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code>, Body: <code>Product</code></td>
+      <td><code>204 No Content</code></td>
+      <td>Update an existing product</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DEL</span></td>
+      <td><code>/api/admin/products/{id}</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code></td>
+      <td><code>204 No Content</code></td>
+      <td>Delete a product</td>
+    </tr>
+  </table>
+
+  <h3>4.7 Admin - Users</h3>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Body / Params</th><th>Response</th><th>Description</th></tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/admin/users</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>-</td>
+      <td><code>IEnumerable&lt;UserDto&gt;</code></td>
+      <td>Get all users with roles and lockout status</td>
+    </tr>
+    <tr>
+      <td><span class="method get">GET</span></td>
+      <td><code>/api/admin/users/{id}</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code></td>
+      <td><code>UserDto</code></td>
+      <td>Get a specific user</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/admin/users/{id}/roles</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code>, Body: <code>role</code> (string)</td>
+      <td><code>204 No Content</code></td>
+      <td>Assign a role to a user (creates role if it doesn't exist)</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DEL</span></td>
+      <td><code>/api/admin/users/{id}/roles</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code>, Body: <code>role</code> (string)</td>
+      <td><code>204 No Content</code></td>
+      <td>Remove a role from a user</td>
+    </tr>
+    <tr>
+      <td><span class="method post">POST</span></td>
+      <td><code>/api/admin/users/{id}/lockout</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code></td>
+      <td><code>204 No Content</code></td>
+      <td>Toggle user lockout status (lock/unlock)</td>
+    </tr>
+    <tr>
+      <td><span class="method delete">DEL</span></td>
+      <td><code>/api/admin/users/{id}</code></td>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>Route: <code>id</code></td>
+      <td><code>204 No Content</code></td>
+      <td>Delete a user permanently</td>
+    </tr>
+  </table>
+</div>
+
+<!-- 5. BUSINESS FLOWS -->
+<div class="card" id="flows">
+  <h2>5. Complete Business Flows</h2>
+
+  <h3>5.1 Full Shopping Flow (User)</h3>
+  <div class="diagram">
+  Step 1: Browse Products
+    GET /api/product?brandId=&amp;typeId=&amp;sortBy=&amp;search=&amp;pageIndex=1&amp;pageSize=10
+    GET /api/product/brands    (get all brands for filter dropdown)
+    GET /api/product/types     (get all types for filter dropdown)
+    GET /api/product/{id}      (view single product detail)
+
+  Step 2: Manage Basket (Redis - no auth required)
+    POST /baskets              { id: "unique-basket-id", basketItems: [...] }
+    GET  /baskets?id=unique-basket-id
+    DEL  /baskets/{id}
+
+  Step 3: Register / Login (if not already authenticated)
+    POST /api/account/register { displayName, email, password }
+    POST /api/account/login    { email, password }
+    Response contains: { id, email, displayName, token, roles }
+    Save the token for subsequent requests.
+
+  Step 4: Choose Delivery Method
+    GET /api/orders/deliveryMethods
+    Response: [{ id, shortName, description, deliveryTime, price }]
+    Example: UPS1 ($10, 1-2 Days), FREE ($0, 1-2 Weeks)
+
+  Step 5: Create Order
+    POST /api/orders?email=user@example.com
+    {
+      basketId: "unique-basket-id",
+      deliveryMethodId: 1,
+      shippingAddress: {
+        firstName: "John",
+        lastName: "Doe",
+        street: "123 Main St",
+        city: "New York",
+        state: "NY",
+        zipCode: "10001"
+      }
+    }
+    System automatically:
+      - Retrieves basket from Redis
+      - Validates delivery method
+      - Looks up product prices from DB
+      - Calculates subtotal
+      - Sets status to Pending
+      - Deletes the basket from Redis
+      - Returns OrderDto with Total
+
+  Step 6: View Orders
+    GET /api/orders?email=user@example.com
+    GET /api/orders/1?email=user@example.com
+  </div>
+
+  <h3>5.2 Admin Flow</h3>
+  <div class="diagram">
+  Step 1: Login as Admin
+    POST /api/account/login { email: "admin@ecommerce.com", password: "Admin@123" }
+
+  Step 2: Manage Users
+    GET  /api/admin/users                        (view all users)
+    GET  /api/admin/users/{id}                   (view single user)
+    POST /api/admin/users/{id}/roles  "Admin"    (assign role)
+    DEL  /api/admin/users/{id}/roles  "User"     (remove role)
+    POST /api/admin/users/{id}/lockout            (toggle lockout)
+    DEL  /api/admin/users/{id}                    (delete user)
+
+  Step 3: Manage Products
+    GET  /api/admin/products                      (view all products)
+    POST /api/admin/products  { ... product }    (create product)
+    PUT  /api/admin/products/1  { ... product }  (update product)
+    DEL  /api/admin/products/1                    (delete product)
+
+  Step 4: Manage Orders
+    GET  /api/admin/orders                        (view all orders)
+    GET  /api/admin/orders?email=user@test.com    (filter by user)
+    PUT  /api/admin/orders/1/status  "Shipped"    (update order status)
+  </div>
+
+  <h3>5.3 Complete Order Lifecycle</h3>
+  <div class="flow">
+    <span class="flow-step">Pending</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">PaymentReceived</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Shipped</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Delivered</span>
+  </div>
+  <div class="flow" style="margin-top: 8px;">
+    <span class="flow-step">Pending</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">PaymentFailed</span>
+  </div>
+  <div class="flow" style="margin-top: 8px;">
+    <span class="flow-step">Any Status</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step">Cancelled</span>
+  </div>
+</div>
+
+<!-- 6. ERROR HANDLING -->
+<div class="card" id="errors">
+  <h2>6. Error Handling System</h2>
+
+  <h3>6.1 Global Exception Handler</h3>
+  <p>The API uses .NET 8+ built-in <code>IExceptionHandler</code> registered via <code>AddExceptionHandler&lt;GlobalExceptionHandler&gt;()</code>. All errors return a uniform <code>ApiResponse</code> format.</p>
+
+  <h4>Response Format</h4>
+  <pre>
+// Success Response (returned directly by controllers, NOT wrapped)
+{ data: ..., message: "..." }
+
+// Error Response (returned by exception handler or validation)
+{
+  message: "...",
+  errors: [
+    { code: "NotFound", description: "Product with ID 5 was not found.", field: null }
+  ]
+}
+  </pre>
+
+  <h4>Business Error Codes &amp; HTTP Status Mapping</h4>
+  <table>
+    <tr><th>Error Code</th><th>HTTP Status</th><th>When Thrown</th></tr>
+    <tr><td><code>BadRequest</code></td><td>400</td><td>General validation failures</td></tr>
+    <tr><td><code>BasketUpdateFailed</code></td><td>400</td><td>Redis basket save failed</td></tr>
+    <tr><td><code>Unauthorized</code></td><td>401</td><td>Authentication required</td></tr>
+    <tr><td><code>InvalidCredentials</code></td><td>401</td><td>Wrong email or password</td></tr>
+    <tr><td><code>Forbidden</code></td><td>403</td><td>Insufficient permissions</td></tr>
+    <tr><td><code>NotFound</code></td><td>404</td><td>Generic resource not found</td></tr>
+    <tr><td><code>ProductNotFound</code></td><td>404</td><td>Product ID doesn't exist</td></tr>
+    <tr><td><code>BasketNotFound</code></td><td>404</td><td>Basket ID not in Redis</td></tr>
+    <tr><td><code>OrderNotFound</code></td><td>404</td><td>Order ID not found for user</td></tr>
+    <tr><td><code>UserNotFound</code></td><td>404</td><td>User ID/email not found</td></tr>
+    <tr><td><code>DeliveryMethodNotFound</code></td><td>404</td><td>Delivery method ID invalid</td></tr>
+    <tr><td><code>EmailAlreadyRegistered</code></td><td>409</td><td>Duplicate email on registration</td></tr>
+  </table>
+
+  <h4>How to Throw Business Exceptions</h4>
+  <pre>
+// In any service:
+throw new BusinessException(BusinessErrorCode.ProductNotFound, $"Product with ID {id} was not found.");
+throw new BusinessException(BusinessErrorCode.EmailAlreadyRegistered, "This email is already registered.");
+throw new BusinessException(BusinessErrorCode.InvalidCredentials, "Invalid email or password.");
+  </pre>
+
+  <h4>Model Validation Errors</h4>
+  <p>When request body validation fails (via <code>[Required]</code>, <code>[EmailAddress]</code>, etc.), the API returns:</p>
+  <pre>
+{
+  message: "Validation failed",
+  errors: [
+    { code: "ValidationError", description: "The Email field is required.", field: "Email" },
+    { code: "ValidationError", description: "The Password field is required.", field: "Password" }
+  ]
+}
+  </pre>
+</div>
+
+<!-- 7. DATABASE SCHEMA -->
+<div class="card" id="database">
+  <h2>7. Database Schema</h2>
+
+  <h3>7.1 Custom Tables (StoreDb)</h3>
+  <div class="diagram">
+  Products
+  --------
+  Id (int, PK)
+  Name (string)
+  Description (string)
+  PictureUrl (string)
+  Price (decimal)
+  BrandId (int, FK -> ProductBrands)
+  TypeId (int, FK -> ProductTypes)
+
+  ProductBrands
+  -------------
+  Id (int, PK)
+  Name (string)
+
+  ProductTypes
+  ------------
+  Id (int, PK)
+  Name (string)
+
+  Orders
+  ------
+  Id (int, PK)
+  BuyerEmail (string)
+  OrderDate (DateTimeOffset)
+  ShippingAddress_FirstName
+  ShippingAddress_LastName
+  ShippingAddress_Street
+  ShippingAddress_City
+  ShippingAddress_State
+  ShippingAddress_ZipCode
+  DeliveryMethodId (int, FK)
+  Subtotal (decimal)
+  Status (string: Pending/PaymentReceived/PaymentFailed/Shipped/Delivered/Cancelled)
+  PaymentIntentId (string)
+
+  OrderItems
+  ----------
+  Id (int, PK)
+  ProductId (int)
+  ProductName (string)
+  PictureUrl (string)
+  Price (decimal)
+  Quantity (int)
+  OrderId (int, FK -> Orders)
+
+  DeliveryMethods
+  ---------------
+  Id (int, PK)
+  ShortName (string)
+  Description (string)
+  DeliveryTime (string)
+  Price (decimal)
+  </div>
+
+  <h3>7.2 Identity Tables (Auto-managed by ASP.NET Identity)</h3>
+  <div class="diagram">
+  AspNetUsers        (extends IdentityUser -> AppUser with DisplayName)
+  AspNetRoles        (seed: "Admin", "User")
+  AspNetUserRoles    (user-role assignments)
+  AspNetRoleClaims
+  AspNetUserClaims
+  AspNetUserLogins
+  AspNetUserTokens
+  </div>
+
+  <h3>7.3 Redis (Basket Storage)</h3>
+  <table>
+    <tr><th>Key</th><th>Value</th><th>TTL</th></tr>
+    <tr><td><code>basket-{id}</code></td><td>JSON string of CustomerBasket (Id + Items[])</td><td>30 days</td></tr>
+  </table>
+  <p><strong>Note:</strong> Baskets are temporary — they are deleted automatically when an order is created.</p>
+</div>
+
+<!-- 8. SEEDED DATA -->
+<div class="card" id="seeded">
+  <h2>8. Seeded Data</h2>
+
+  <h3>8.1 Admin Account</h3>
+  <table>
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Email</td><td><code>admin@ecommerce.com</code></td></tr>
+    <tr><td>DisplayName</td><td>Admin</td></tr>
+    <tr><td>Password</td><td><code>Admin@123</code></td></tr>
+    <tr><td>Role</td><td>Admin</td></tr>
+  </table>
+
+  <h3>8.2 Delivery Methods</h3>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Description</th><th>Time</th><th>Price</th></tr>
+    <tr><td>1</td><td>UPS1</td><td>Fastest delivery time</td><td>1-2 Days</td><td>$10</td></tr>
+    <tr><td>2</td><td>UPS2</td><td>Get it within 5 days</td><td>2-5 Days</td><td>$5</td></tr>
+    <tr><td>3</td><td>UPS3</td><td>Slower but cheap</td><td>5-10 Days</td><td>$2</td></tr>
+    <tr><td>4</td><td>FREE</td><td>Free! You get what you pay for</td><td>1-2 Weeks</td><td>$0</td></tr>
+  </table>
+
+  <h3>8.3 Product Brands (6)</h3>
+  Chicken, Seafood, Pasta and Noodles, Soup, Desserts, Vegetable
+
+  <h3>8.4 Product Types (4)</h3>
+  Italian, Mexican, Indian, Chinese
+
+  <h3>8.5 Products (18)</h3>
+  <p>18 products across various brands and types, with prices ranging from <strong>$8 to $300</strong>. Each product has a name, description, picture URL, brand, and type assignment.</p>
+
+  <div class="info-box success">
+    <strong>Tip:</strong> The database is seeded automatically on first run via <code>DbInitializer.InitilizeAsync()</code> which runs in <code>Program.cs</code> before the app starts listening for requests. It only seeds if tables are empty.
+  </div>
+</div>
+
+<!-- 9. ROLES & PERMISSIONS -->
+<div class="card" id="roles">
+  <h2>9. User Roles &amp; Permissions</h2>
+
+  <table>
+    <tr><th>Role</th><th>Endpoints</th><th>Description</th></tr>
+    <tr>
+      <td><span class="tag tag-public">Public</span></td>
+      <td>
+        <code>GET /api/product/**</code><br>
+        <code>GET /baskets/**</code><br>
+        <code>POST /baskets</code><br>
+        <code>DELETE /baskets/{id}</code><br>
+        <code>POST /api/account/register</code><br>
+        <code>POST /api/account/login</code>
+      </td>
+      <td>No authentication required. Anyone can browse products, manage a basket, register, and login.</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-auth">Authenticated</span></td>
+      <td>
+        <code>GET /api/account/currentUser</code><br>
+        <code>GET /api/orders?email=</code><br>
+        <code>GET /api/orders/{id}?email=</code><br>
+        <code>POST /api/orders?email=</code><br>
+        <code>GET /api/orders/deliveryMethods</code>
+      </td>
+      <td>Requires a valid JWT token. Can view their own orders and create orders from their basket.</td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-admin">Admin</span></td>
+      <td>
+        <code>GET /api/admin/products</code><br>
+        <code>POST /api/admin/products</code><br>
+        <code>PUT /api/admin/products/{id}</code><br>
+        <code>DELETE /api/admin/products/{id}</code><br>
+        <code>GET /api/admin/orders</code><br>
+        <code>PUT /api/admin/orders/{id}/status</code><br>
+        <code>GET /api/admin/users</code><br>
+        <code>GET /api/admin/users/{id}</code><br>
+        <code>POST /api/admin/users/{id}/roles</code><br>
+        <code>DELETE /api/admin/users/{id}/roles</code><br>
+        <code>POST /api/admin/users/{id}/lockout</code><br>
+        <code>DELETE /api/admin/users/{id}</code>
+      </td>
+      <td>Requires a JWT token with the "Admin" role. Full CRUD on products, full order lifecycle management (update status), and user management (roles, lockout, delete).</td>
+    </tr>
+  </table>
+
+  <div class="info-box warn">
+    <strong>Note:</strong> The public Order endpoints (<code>/api/orders/**</code>) do not have the <code>[Authorize]</code> attribute on the controller, but they expect the user's email as a query parameter. This is a simplification — in production, these should extract the user from the JWT token rather than requiring email in the URL.
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="card" style="text-align:center; color: var(--gray); font-size: 0.85rem;">
+  <p><strong>E-Commerce API</strong> &mdash; Built with .NET 9, Clean Architecture, JWT Auth, EF Core, and Redis</p>
+  <p style="margin-top: 6px;">Generated on July 28, 2026</p>
+</div>
+
+</div>
+</body>
+</html>
