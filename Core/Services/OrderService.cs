@@ -28,11 +28,15 @@ namespace Services
                 ?? throw new BusinessException(BusinessErrorCode.DeliveryMethodNotFound, deliveryMethodId);
 
             var orderItems = new List<OrderItem>();
+            var productIds = basket.Items.Select(item => item.Id).ToList();
+            var products = await unitOfWork
+                .GetReposatory<Domain.Models.Product, int>()
+                .GetAllAsync(new ProductByIdsSpecification(productIds));
+            var productById = products.ToDictionary(product => product.Id);
+
             foreach (var item in basket.Items)
             {
-                var product = await unitOfWork
-                    .GetReposatory<Domain.Models.Product, int>().GetAsync(item.Id);
-                if (product != null)
+                if (productById.TryGetValue(item.Id, out var product))
                 {
                     orderItems.Add(new OrderItem
                     {

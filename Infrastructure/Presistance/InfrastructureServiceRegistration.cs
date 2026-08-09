@@ -38,7 +38,7 @@ public static class InfrastructureServicesRegistration
         services.AddScoped<IBasketReposatory, BasketRepository>();
         services.AddSingleton<IConnectionMultiplexer>((_) =>
         {
-            return ConnectionMultiplexer.Connect(configuration.GetConnectionString("RediusConnection")!);
+            return ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!);
         });
         return services;
     }

@@ -1,8 +1,8 @@
 using Domain.Contracts;
 using Domain.Models;
-using Domain.Models.Order;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto.Products;
 using ServicesAbstractions;
 
 namespace E_Commerce.Controllers.Admin
@@ -15,26 +15,45 @@ namespace E_Commerce.Controllers.Admin
         IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shared.Dto.Products.ProductResponse>>> GetAll()
+        public async Task<ActionResult<PaginatedResponse<ProductResponse>>> GetAll()
         {
-            var products = await serviceManager.ProductService.GetAllProductsAsync(new Shared.Dto.Products.ProductQueryParameter());
+            var products = await serviceManager.ProductService.GetAllProductsAsync(new ProductQueryParameter());
             return Ok(products);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> Create([FromBody] Product product)
+        public async Task<ActionResult<Product>> Create([FromBody] ProductUpsertDto dto)
         {
+            var product = new Product
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                PictureUrl = dto.PictureUrl,
+                Price = dto.Price,
+                BrandId = dto.BrandId,
+                TypeId = dto.TypeId
+            };
+
             var repo = unitOfWork.GetReposatory<Product, int>();
             repo.Add(product);
             await unitOfWork.SaveChangesAsync();
-            return Ok(product);
+            return StatusCode(StatusCodes.Status201Created, product);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Product product)
+        public async Task<ActionResult> Update(int id, [FromBody] ProductUpsertDto dto)
         {
-            if (id != product.Id) return BadRequest("Id mismatch");
             var repo = unitOfWork.GetReposatory<Product, int>();
+            var product = await repo.GetAsync(id);
+            if (product == null) return NotFound();
+
+            product.Name = dto.Name;
+            product.Description = dto.Description;
+            product.PictureUrl = dto.PictureUrl;
+            product.Price = dto.Price;
+            product.BrandId = dto.BrandId;
+            product.TypeId = dto.TypeId;
+
             repo.Update(product);
             await unitOfWork.SaveChangesAsync();
             return NoContent();

@@ -59,7 +59,7 @@ namespace Services
             if (user == null)
                 throw new BusinessException(BusinessErrorCode.InvalidCredentials);
 
-            var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, lockoutOnFailure: true);
             if (!result.Succeeded)
                 throw new BusinessException(BusinessErrorCode.InvalidCredentials);
 
