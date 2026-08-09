@@ -27,10 +27,10 @@ namespace Services.Specification
             return product =>
                  (!parameter.BrandId.HasValue || product.BrandId == parameter.BrandId.Value) &&
                  (!parameter.TypeId.HasValue || product.TypeId == parameter.TypeId.Value) &&
-                 (string.IsNullOrWhiteSpace(parameter.Search) || product.Name.ToLower().Contains(parameter.Search.ToLower()));
+                 (string.IsNullOrWhiteSpace(parameter.Search) || product.Name.Contains(parameter.Search));
         }
 
-        private void ApplySorting(ProductSortingOptions options)
+        private void ApplySorting(ProductSortingOptions? options)
         {
             switch (options)
             {

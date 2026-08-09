@@ -10,12 +10,12 @@ namespace E_Commerce.Factories
         {
             var errors = context.ModelState
                 .Where(e => e.Value?.Errors.Count > 0)
-                .Select(e => new ApiError
+                .SelectMany(e => e.Value!.Errors.Select(error => new ApiError
                 {
                     Code = "ValidationError",
-                    Description = e.Value!.Errors.First().ErrorMessage,
+                    Description = string.IsNullOrEmpty(error.ErrorMessage) ? "Invalid value" : error.ErrorMessage,
                     Field = e.Key
-                });
+                }));
 
             var response = ApiResponse<object?>.Failure("Validation failed", errors);
             return new BadRequestObjectResult(response);
