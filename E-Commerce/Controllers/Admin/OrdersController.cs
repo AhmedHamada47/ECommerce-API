@@ -23,15 +23,14 @@ namespace E_Commerce.Controllers.Admin
                 return Ok(userOrders);
             }
 
-            var repo = unitOfWork.GetReposatory<Order, int>();
-            var orders = await repo.GetAllAsync();
+            var orders = await serviceManager.OrderService.GetAllOrdersAsync();
             return Ok(orders);
         }
 
         [HttpPut("{id}/status")]
         public async Task<ActionResult> UpdateStatus(int id, [FromBody] OrderStatus status)
         {
-            var repo = unitOfWork.GetReposatory<Order, int>();
+            var repo = unitOfWork.GetRepository<Order, int>();
             var order = await repo.GetAsync(id);
             if (order == null) return NotFound();
 

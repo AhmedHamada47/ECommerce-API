@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce API - Full Project Analysis &amp; Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #1e293b 0%, #2563eb 50%, #764ba2 100%); color: #fff; padding: 45px 0 35px; text-align: center; border-radius: 0 0 20px 20px; margin-bottom: 30px; }
+        header h1 { font-size: 2.4em; margin-bottom: 10px; }
+        header p { opacity: 0.95; }
+        header .badge { display: inline-block; background: rgba(255,255,255,0.18); padding: 6px 18px; border-radius: 20px; font-size: 0.9em; margin: 6px 4px; }
+        .rating-card { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left: 5px solid #28a745; }
+        .rating-card h2 { color: #764ba2; margin-bottom: 20px; }
+        .overall-score { font-size: 3.2em; font-weight: 800; text-align: center; color: #28a745; }
+        .overall-label { text-align: center; color: #6c757d; margin-bottom: 15px; }
+        .score-bar { background: #e9ecef; border-radius: 20px; height: 20px; margin: 10px 0; overflow: hidden; }
+        .score-bar-inner { height: 100%; border-radius: 20px; }
+        .score-good { background: linear-gradient(90deg, #28a745, #20c997); }
+        .score-mid { background: linear-gradient(90deg, #ffc107, #fd7e14); }
+        .score-bad { background: linear-gradient(90deg, #dc3545, #e83e8c); }
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .feature-box { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 10px; padding: 14px 16px; }
+        .feature-box .fname { font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        .feature-box .fscore { font-weight: 800; font-size: 1.1em; }
+        .section { background: #fff; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .section h2 { color: #764ba2; border-bottom: 3px solid #667eea; padding-bottom: 10px; margin-bottom: 25px; }
+        .section h3 { color: #495057; margin: 22px 0 10px; }
+        .section h4 { color: #6c757d; margin: 15px 0 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid #e9ecef; font-size: 0.95em; }
+        th { background: #f8f9fa; font-weight: 600; color: #495057; }
+        tr:hover { background: #f1f3f5; }
+        .code-block { background: #282c34; color: #abb2bf; padding: 16px; border-radius: 10px; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.85em; margin: 10px 0; }
+        .code-block .kw { color: #c678dd; }
+        .code-block .str { color: #98c379; }
+        .code-block .ty { color: #e5c07b; }
+        .code-block .cm { color: #5c6370; font-style: italic; }
+        .endpoint { background: #f8f9fa; border-left: 4px solid #667eea; padding: 14px 16px; margin: 10px 0; border-radius: 0 8px 8px 0; }
+        .endpoint .route { font-family: monospace; font-size: 1.05em; font-weight: 600; }
+        .method { display: inline-block; padding: 2px 10px; border-radius: 4px; color: #fff; font-weight: 700; font-size: 0.78em; margin-right: 8px; vertical-align: middle; }
+        .method.get { background: #28a745; }
+        .method.post { background: #007bff; }
+        .method.put { background: #ffc107; color: #333; }
+        .method.delete { background: #dc3545; }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.75em; font-weight: 700; margin: 2px 2px 0 0; }
+        .tag.public { background: #d1fae5; color: #059669; }
+        .tag.auth { background: #dbeafe; color: #2563eb; }
+        .tag.admin { background: #fce7f3; color: #be185d; }
+        .tag.fixed { background: #dcfce7; color: #16a34a; }
+        .tag.sev-critical { background: #dc2626; color: #fff; }
+        .tag.sev-high { background: #ea580c; color: #fff; }
+        .tag.sev-medium { background: #d97706; color: #fff; }
+        .tag.sev-low { background: #64748b; color: #fff; }
+        .diagram { background: #f8f9fa; padding: 20px; border-radius: 10px; font-family: 'Consolas', monospace; white-space: pre; line-height: 1.7; margin: 15px 0; font-size: 0.85em; overflow-x: auto; }
+        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .pros { background: #d4edda; padding: 15px; border-radius: 10px; }
+        .cons { background: #f8d7da; padding: 15px; border-radius: 10px; }
+        .pros h4 { color: #155724; }
+        .cons h4 { color: #721c24; }
+        .pros ul, .cons ul { list-style: none; padding: 0; margin-top: 8px; }
+        .pros ul li::before { content: "\2713  "; color: #28a745; font-weight: bold; }
+        .cons ul li::before { content: "\2717  "; color: #dc3545; font-weight: bold; }
+        .cons ul li { margin-bottom: 4px; }
+        .warn { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+        .crit { background: #f8d7da; border-left: 4px solid #dc3545; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+        .good { background: #d4edda; border-left: 4px solid #28a745; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+        .ref { font-family: 'Consolas', monospace; font-size: 0.82em; color: #6c757d; }
+        footer { text-align: center; padding: 30px; color: #6c757d; font-size: 0.9em; }
+        @media (max-width: 768px) { .pros-cons, .feature-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>E-Commerce API</h1>
+        <p>Full Project Analysis, Feature Ratings &amp; Results</p>
+        <div>
+            <span class="badge">.NET 9</span>
+            <span class="badge">Clean Architecture</span>
+            <span class="badge">JWT Auth</span>
+            <span class="badge">EF Core 9 + SQL Server</span>
+            <span class="badge">Redis</span>
+            <span class="badge">AutoMapper</span>
+            <span class="badge">Swagger</span>
+        </div>
+        <div class="badge" style="margin-top:12px;">Generated: August 2026 &bull; Includes security &amp; quality fixes applied this session &bull; Build: 0 errors</div>
+    </div>
+</header>
+<div class="container">
+
+<!-- ============ 1. OVERALL ============ -->
+<div class="rating-card">
+    <h2>1. Overall Analysis &amp; Score</h2>
+    <div class="overall-score">7.0 / 10</div>
+    <div class="overall-label">Solid, now-secured foundation &mdash; remaining gaps are payments, tests &amp; observability</div>
+    <div class="score-bar"><div class="score-bar-inner score-good" style="width:70%;"></div></div>
+    <p style="margin:15px 0;"><strong>Verdict:</strong> A well-structured .NET 9 e-commerce backend following Clean Architecture across 8 projects. This session removed the critical blockers: the Orders module is now <strong>authenticated and tied to the JWT user</strong>, brute-force lockout is enabled, admin endpoints no longer bind raw domain entities, the N+1 order-creation bug is fixed, and validation now covers checkout DTOs. The API builds with <strong>0 errors</strong>. What remains before production is feature-completeness (payments, tests, observability, secrets management) rather than architecture rework.</p>
+    <div class="pros-cons">
+        <div class="pros">
+            <h4>Key Strengths</h4>
+            <ul>
+                <li>Clean Architecture, 8 projects, clear layering</li>
+                <li>Specification + UnitOfWork + Generic Repository patterns</li>
+                <li>Code-driven exception pipeline (BusinessErrorCode + IExceptionHandler)</li>
+                <li>Uniform ApiResponse&lt;T&gt; envelope everywhere</li>
+                <li>Redis basket with TTL; JSON seeding; Swagger with Bearer</li>
+                <li>Orders now secured to the authenticated user</li>
+            </ul>
+        </div>
+        <div class="cons">
+            <h4>Remaining Gaps</h4>
+            <ul>
+                <li>No payment integration (order status stays Pending)</li>
+                <li>No automated tests</li>
+                <li>JWT secret still in appsettings.json (needs user-secrets/env)</li>
+                <li>No structured logging / health checks</li>
+                <li>Baskets remain keyed by client-supplied ID (by design, needs auth tie-in)</li>
+                <li>Naming debt (Reposatory, Presistance, Specefications, etc.)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 2. FIXES APPLIED THIS SESSION ============ -->
+<div class="section">
+    <h2>2. Fixes Applied This Session</h2>
+    <table>
+        <tr><th>#</th><th>Severity</th><th>Issue</th><th>Fix</th><th>Files</th></tr>
+        <tr><td>1</td><td><span class="tag sev-critical">CRITICAL</span></td><td>Orders module fully unauthenticated; user identity from query-string email</td><td>Added <code>[Authorize]</code>; email now read from JWT <code>ClaimTypes.Email</code></td><td><span class="ref">OrdersController.cs</span></td></tr>
+        <tr><td>2</td><td><span class="tag sev-high">HIGH</span></td><td>Brute-force lockout disabled</td><td><code>lockoutOnFailure: true</code> (policy: 5 attempts / 15 min already configured)</td><td><span class="ref">AuthService.cs:62</span></td></tr>
+        <tr><td>3</td><td><span class="tag sev-high">HIGH</span></td><td>Admin product create/update bound raw <code>Product</code> entity (mass-assignment) + NRE on null body</td><td>New validated <code>ProductUpsertDto</code>; null-safe load-then-update; 201 on create</td><td><span class="ref">Admin/ProductsController.cs</span>, <span class="ref">ProductUpsertDto.cs</span></td></tr>
+        <tr><td>4</td><td><span class="tag sev-high">HIGH</span></td><td>N+1 queries in order creation (one DB hit per basket item)</td><td>Single <code>ProductByIdsSpecification</code> query + dictionary lookup</td><td><span class="ref">OrderService.cs</span>, <span class="ref">ProductByIdsSpecification.cs</span></td></tr>
+        <tr><td>5</td><td><span class="tag sev-medium">MED</span></td><td>No validation on CreateOrderDto / ShippingAddressDto</td><td>Added <code>[Required]</code>, <code>[Range]</code>, <code>[MaxLength]</code></td><td><span class="ref">CreateOrderDto.cs</span>, <span class="ref">ShippingAddressDto.cs</span></td></tr>
+        <tr><td>6</td><td><span class="tag sev-medium">MED</span></td><td>Admin order listing leaked raw <code>Order</code> entities</td><td>New <code>GetAllOrdersAsync()</code> service method returning mapped <code>OrderDto</code></td><td><span class="ref">Admin/OrdersController.cs</span>, <span class="ref">OrderService.cs</span></td></tr>
+        <tr><td>7</td><td><span class="tag sev-medium">MED</span></td><td><code>PageIndex</code> unclamped &rarr; negative SKIP &rarr; 500; silent default sorting</td><td>PageIndex clamped to &ge;1; <code>SortBy</code> nullable (no ORDER BY unless requested)</td><td><span class="ref">ProductQueryParameter.cs</span>, <span class="ref">ProductWithBrandAndTypeSpecification.cs</span></td></tr>
+        <tr><td>8</td><td><span class="tag sev-medium">MED</span></td><td>Search used <code>ToLower().Contains()</code> (kills index usage)</td><td>Plain <code>Contains</code> (SQL collation already case-insensitive)</td><td><span class="ref">ProductWithBrandAndTypeSpecification.cs:30</span></td></tr>
+        <tr><td>9</td><td><span class="tag sev-low">LOW</span></td><td>Unknown BusinessErrorCode silently mapped to 404</td><td>All 12 codes mapped explicitly; default <code>throw</code> (compile-time guard CS8524)</td><td><span class="ref">BusinessErrorHttpStatusMapper.cs</span></td></tr>
+        <tr><td>10</td><td><span class="tag sev-low">LOW</span></td><td>Validation responses dropped all but first error per field</td><td><code>SelectMany</code> &rarr; one ApiError per message</td><td><span class="ref">APIResponseFactory.cs</span></td></tr>
+        <tr><td>11</td><td><span class="tag sev-low">LOW</span></td><td>Redis key typo <code>RediusConnection</code></td><td>Renamed to <code>RedisConnection</code> (config + registration)</td><td><span class="ref">appsettings.json</span>, <span class="ref">InfrastructureServiceRegistration.cs</span></td></tr>
+        <tr><td>12</td><td><span class="tag sev-low">LOW</span></td><td>Dead code: empty <code>ApiController</code>, orphan <code>IServiceManger</code></td><td>Deleted both (verified no references)</td><td><span class="ref">Presentation/Controllers</span>, <span class="ref">ServicesAbstractions</span></td></tr>
+    </table>
+    <div class="good"><strong>Verification:</strong> <code>dotnet build E-Commerce.sln</code> &rarr; <strong>0 errors</strong>.</div>
+</div>
+
+<!-- ============ 3. FEATURE RATINGS ============ -->
+<div class="section">
+    <h2>3. Feature Rating Summary</h2>
+    <div class="feature-grid">
+        <div class="feature-box"><div class="fname"><span>Architecture &amp; Structure</span><span class="fscore" style="color:#28a745;">9.0</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:90%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Error Handling</span><span class="fscore" style="color:#28a745;">9.5</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:95%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Product Catalog</span><span class="fscore" style="color:#28a745;">9.0</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:90%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Documentation / DevEx</span><span class="fscore" style="color:#20c997;">8.0</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:80%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Data Layer &amp; Migrations</span><span class="fscore" style="color:#fd7e14;">7.5</span></div><div class="score-bar"><div class="score-bar-inner score-mid" style="width:75%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>API Design &amp; Contracts</span><span class="fscore" style="color:#fd7e14;">7.5</span></div><div class="score-bar"><div class="score-bar-inner score-mid" style="width:75%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Basket (Redis)</span><span class="fscore" style="color:#fd7e14;">7.0</span></div><div class="score-bar"><div class="score-bar-inner score-mid" style="width:70%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Authentication (JWT)</span><span class="fscore" style="color:#20c997;">7.5</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:75%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Performance</span><span class="fscore" style="color:#fd7e14;">6.5</span></div><div class="score-bar"><div class="score-bar-inner score-mid" style="width:65%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Orders / Checkout</span><span class="fscore" style="color:#20c997;">7.5</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:75%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Admin Module</span><span class="fscore" style="color:#20c997;">7.5</span></div><div class="score-bar"><div class="score-bar-inner score-good" style="width:75%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Observability</span><span class="fscore" style="color:#e8590c;">4.0</span></div><div class="score-bar"><div class="score-bar-inner score-bad" style="width:40%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Security</span><span class="fscore" style="color:#fd7e14;">6.5</span></div><div class="score-bar"><div class="score-bar-inner score-mid" style="width:65%;"></div></div></div>
+        <div class="feature-box"><div class="fname"><span>Testing</span><span class="fscore" style="color:#dc3545;">1.0</span></div><div class="score-bar"><div class="score-bar-inner score-bad" style="width:10%;"></div></div></div>
+    </div>
+    <p style="color:#6c757d;font-size:0.9em;">Scores reflect the state after this session&rsquo;s fixes. Remaining low scores are driven by missing features, not broken logic.</p>
+</div>
+
+<!-- ============ 4. ARCHITECTURE ============ -->
+<div class="section">
+    <h2>4. Architecture &amp; Solution Layout</h2>
+    <div class="diagram">
+E-Commerce.sln  (8 projects, all net9.0)
++-- E-Commerce  (Web API - startup, middleware, admin controllers)
+|   +-- Controllers/Admin/   (Products, Orders, Users)
+|   +-- Middleware/          (GlobalExceptionHandler)
+|   +-- Factories/           (APIResponseFactory, Extensions)
++-- Core/
+|   +-- Domain               (entities, Identity, contracts, exceptions)
+|   +-- ServicesAbstractions (service interfaces)
+|   +-- Services             (implementations, specifications, AutoMapper)
++-- Infrastructure/
+|   +-- Presistance          (EF Core DbContext, repos, migrations, seeding)
+|   +-- Presentation         (public controllers: Product, Basket, Account, Order)
++-- Shared                   (DTOs, error models)
+    </div>
+    <h3>Dependency flow</h3>
+    <table>
+        <tr><th>Project</th><th>References</th><th>Concern</th></tr>
+        <tr><td>E-Commerce</td><td>Presentation, Presistance</td><td>Hosts admin controllers + config</td></tr>
+        <tr><td>Core/Domain</td><td>identity stores only</td><td>Entities, contracts, exceptions</td></tr>
+        <tr><td>Core/Services</td><td>Domain, ServicesAbstractions</td><td>Business logic, specs, AutoMapper</td></tr>
+        <tr><td>Core/ServicesAbstractions</td><td>Shared, Domain</td><td>Service interfaces</td></tr>
+        <tr><td>Infra/Presistance</td><td>Core/Services, EF, Redis</td><td>DbContext, repositories, migrations, seeding</td></tr>
+        <tr><td>Infra/Presentation</td><td>ServicesAbstractions</td><td>Public API controllers</td></tr>
+        <tr><td>Shared</td><td>&mdash;</td><td>DTOs, error envelope</td></tr>
+    </table>
+    <div class="warn"><strong>Known smell (unchanged):</strong> <code>Presistance</code> depends on <code>Core/Services</code> &mdash; the persistence layer points at the application layer. Works fine today; a strict Clean Architecture fix would keep persistence depending only on Domain contracts.</div>
+</div>
+
+<!-- ============ 5. API REFERENCE ============ -->
+<div class="section">
+    <h2>5. Full API Endpoint Reference</h2>
+
+    <h3>Product Catalog <span class="tag public">PUBLIC</span></h3>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Product</div><span class="tag public">PUBLIC</span><p>Paginated products. Query: BrandId, TypeId, SortBy (NameAsc/NameDesc/PriceAsc/PriceDesc), Search, PageIndex (&ge;1, clamped), PageSize (default 5, max 10). Invalid SortBy &rarr; 400.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Product/{id}</div><span class="tag public">PUBLIC</span><p>Single product; 404 via ProductNotFound.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Product/brands</div><span class="tag public">PUBLIC</span><p>All brands (6 seeded).</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Product/types</div><span class="tag public">PUBLIC</span><p>All types (4 seeded).</p></div>
+
+    <h3>Basket <span class="tag public">PUBLIC</span></h3>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /Baskets?id=</div><span class="tag public">PUBLIC</span><p>Get basket (Redis, 30-day TTL).</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /Baskets</div><span class="tag public">PUBLIC</span><p>Upsert basket; validated via BasketItemDto [Range] rules.</p></div>
+    <div class="endpoint"><div class="route"><span class="method delete">DELETE</span> /Baskets/{id}</div><span class="tag public">PUBLIC</span><p>Delete basket &rarr; 204.</p></div>
+
+    <h3>Account <span class="tag public">PUBLIC</span> / <span class="tag auth">AUTH</span></h3>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/Account/register</div><span class="tag public">PUBLIC</span><p>Register; returns { Id, Email, DisplayName, Token, Roles }. 409 on duplicate email.</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/Account/login</div><span class="tag public">PUBLIC</span><p>Login; 401 on bad credentials; account locks after 5 failures / 15 min.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Account/currentUser</div><span class="tag auth">AUTH</span><p>Current user from JWT.</p></div>
+
+    <h3>Orders <span class="tag auth">AUTH - FIXED</span></h3>
+    <div class="good">All order endpoints now require a valid JWT; the user is taken from the token (email claim) &mdash; the old query-string email attack surface is closed.</div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Orders</div><span class="tag auth">AUTH</span><p>Orders for the authenticated user.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Orders/{id}</div><span class="tag auth">AUTH</span><p>Single order (scoped to user); 404 if not theirs.</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/Orders</div><span class="tag auth">AUTH</span><p>Create order from basket. Body: { BasketId, DeliveryMethodId, ShippingAddress{FirstName,LastName,Street,City,State,ZipCode} } &mdash; all required/validated.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/Orders/deliveryMethods</div><span class="tag auth">AUTH</span><p>Delivery methods (4 seeded).</p></div>
+
+    <h3>Admin <span class="tag admin">ADMIN ONLY</span> /api/admin/*</h3>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/admin/Products</div><span class="tag admin">ADMIN</span><p>Products (PaginatedResponse).</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/admin/Products</div><span class="tag admin">ADMIN</span><p>Create product &mdash; body: ProductUpsertDto (validated) &rarr; 201.</p></div>
+    <div class="endpoint"><div class="route"><span class="method put">PUT</span> /api/admin/Products/{id}</div><span class="tag admin">ADMIN</span><p>Update product &mdash; 404 if missing, 204 on success, 400 on invalid body.</p></div>
+    <div class="endpoint"><div class="route"><span class="method delete">DELETE</span> /api/admin/Products/{id}</div><span class="tag admin">ADMIN</span><p>Delete product.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/admin/Orders?email=</div><span class="tag admin">ADMIN</span><p>All orders (OrderDto) or per-email.</p></div>
+    <div class="endpoint"><div class="route"><span class="method put">PUT</span> /api/admin/Orders/{id}/status</div><span class="tag admin">ADMIN</span><p>Update OrderStatus.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/admin/Users</div><span class="tag admin">ADMIN</span><p>All users with roles + lockout.</p></div>
+    <div class="endpoint"><div class="route"><span class="method get">GET</span> /api/admin/Users/{id}</div><span class="tag admin">ADMIN</span><p>User by id.</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/admin/Users/{id}/roles</div><span class="tag admin">ADMIN</span><p>Assign role.</p></div>
+    <div class="endpoint"><div class="route"><span class="method delete">DELETE</span> /api/admin/Users/{id}/roles</div><span class="tag admin">ADMIN</span><p>Remove role.</p></div>
+    <div class="endpoint"><div class="route"><span class="method post">POST</span> /api/admin/Users/{id}/lockout</div><span class="tag admin">ADMIN</span><p>Toggle lockout.</p></div>
+    <div class="endpoint"><div class="route"><span class="method delete">DELETE</span> /api/admin/Users/{id}</div><span class="tag admin">ADMIN</span><p>Delete user.</p></div>
+</div>
+
+<!-- ============ 6. DATABASE ============ -->
+<div class="section">
+    <h2>6. Database &amp; Migrations</h2>
+    <h3>Migration state</h3>
+    <p>Single migration <code>20260728092913_InitialCreate</code> creates the full schema: 7 Identity tables (AspNet*), Products, ProductBrands, ProductTypes, orders (flattened owned ShippingAddress_* + Status nvarchar(50)), orderItems, deliveryMethods. Baskets are Redis-only (no table). DbInitializer applies migrations + seeds on startup.</p>
+    <h3>Seeded data</h3>
+    <table>
+        <tr><th>Item</th><th>Details</th></tr>
+        <tr><td>Roles</td><td>Admin, User</td></tr>
+        <tr><td>Admin user</td><td>admin@ecommerce.com / Admin@123 (change before production)</td></tr>
+        <tr><td>Brands / Types / Products</td><td>6 / 4 / 18 from JSON files</td></tr>
+        <tr><td>Delivery methods</td><td>UPS1 $10, UPS2 $5, UPS3 $2, FREE $0</td></tr>
+    </table>
+    <h3>Connection strings (appsettings.json)</h3>
+    <div class="code-block">
+"DefaultConnection": "Server=(localdb)\ProjectModels;Database=StoreDb;Trusted_Connection=True;TrustServerCertificate=True;"
+"RedisConnection": "localhost"
+"JWT": { "SecretKey": "YourSuperSecretKeyThatIsAtLeast32CharactersLong!", "Issuer": "https://localhost:7228", "Audience": "https://localhost:7228" }
+    </div>
+    <div class="warn"><strong>Remaining debt:</strong> <code>orderItems.OrderId</code> is a nullable shadow FK (needs a model property + migration to enforce); seeding uses relative JSON paths; mixed table naming (Products vs orders).</div>
+</div>
+
+<!-- ============ 7. SECURITY AUDIT ============ -->
+<div class="section">
+    <h2>7. Security Audit &mdash; Current State</h2>
+    <h3>7.1 Fixed this session <span class="tag fixed">FIXED</span></h3>
+    <table>
+        <tr><th>Was</th><th>Now</th></tr>
+        <tr><td>Orders unauthenticated, email from query string (C1)</td><td>[Authorize] + email from JWT claim</td></tr>
+        <tr><td>Brute-force lockout disabled (H2)</td><td>lockoutOnFailure: true (5 attempts / 15 min)</td></tr>
+        <tr><td>Admin bound raw Product entity, NRE on null body (H3)</td><td>Validated ProductUpsertDto, null-safe update</td></tr>
+        <tr><td>No validation on checkout DTOs (M3)</td><td>Required/Range/MaxLength attributes</td></tr>
+        <tr><td>Admin order list leaked raw entities</td><td>Mapped OrderDto via service</td></tr>
+    </table>
+
+    <h3>7.2 Remaining risks</h3>
+    <table>
+        <tr><th>Severity</th><th>Issue</th><th>Location</th></tr>
+        <tr><td><span class="tag sev-high">HIGH</span></td><td>JWT secret hardcoded in committed appsettings.json</td><td><span class="ref">appsettings.json:15</span></td></tr>
+        <tr><td><span class="tag sev-high">HIGH</span></td><td>Hardcoded admin credentials in seeder (Admin@123)</td><td><span class="ref">Dbinitializer.cs</span></td></tr>
+        <tr><td><span class="tag sev-high">HIGH</span></td><td>Baskets unauthenticated; any guessed ID can read/modify a basket</td><td><span class="ref">BasketsController.cs</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>Admin role API accepts arbitrary role strings; self-demotion / locking last admin possible</td><td><span class="ref">UsersController.cs</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>CORS AllowAll (any origin)</td><td><span class="ref">Program.cs:42</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>Weak password policy (min length 6, no uppercase requirement)</td><td><span class="ref">InfrastructureServiceRegistration.cs</span></td></tr>
+        <tr><td><span class="tag sev-low">LOW</span></td><td>Redis localhost, no auth/TLS; AllowedHosts "*"</td><td><span class="ref">appsettings.json</span></td></tr>
+    </table>
+</div>
+
+<!-- ============ 8. TECH DEBT ============ -->
+<div class="section">
+    <h2>8. Remaining Technical Debt</h2>
+    <h3>Logic / quality items (not yet fixed)</h3>
+    <table>
+        <tr><th>Severity</th><th>Issue</th><th>Location</th></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>Order creation: no DB transaction around order-save + basket-delete (partial state if delete fails)</td><td><span class="ref">OrderService.cs</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>N+1 in GetUsersAsync (roles + lockout per user)</td><td><span class="ref">UserService.cs:19-30</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>orderItems.OrderId nullable FK (shadow property)</td><td><span class="ref">OrderConfiguration.cs</span></td></tr>
+        <tr><td><span class="tag sev-medium">MED</span></td><td>GetCurrentUser mints a fresh JWT on every call</td><td><span class="ref">AuthService.cs:79-95</span></td></tr>
+        <tr><td><span class="tag sev-low">LOW</span></td><td>Basket update resets TTL to 30 days</td><td><span class="ref">BasketService.cs:24</span></td></tr>
+        <tr><td><span class="tag sev-low">LOW</span></td><td>DbInitializer swallows exceptions; relative JSON paths</td><td><span class="ref">Dbinitializer.cs</span></td></tr>
+        <tr><td><span class="tag sev-low">LOW</span></td><td>Package version drift (JwtBearer 8.0.0 vs EF 9.0.4; Identity 2.3.1; AutoMapper 14 NU1903)</td><td>csproj files</td></tr>
+        <tr><td><span class="tag sev-low">LOW</span></td><td>Spec queries tracked (no AsNoTracking)</td><td><span class="ref">SpecificationsEvaluator.cs</span></td></tr>
+    </table>
+    <h3>Naming debt (public API surface)</h3>
+    <table>
+        <tr><th>Identifier</th><th>Should be</th></tr>
+        <tr><td>Reposatory / GetReposatory / IGenricReposatory</td><td>Repository / GetRepository / IGenericRepository</td></tr>
+        <tr><td>Presistance (folder/project/namespace)</td><td>Persistence</td></tr>
+        <tr><td>Specefications / ProductCountSpecefications</td><td>Specifications</td></tr>
+        <tr><td>IDbinitializer / InitilizeAsync / Dbinitializer.cs</td><td>IDbInitializer / InitializeAsync / DbInitializer.cs</td></tr>
+        <tr><td>ProductWithBrandAndTypeSpecification.cs (file vs class name)</td><td>Match names</td></tr>
+    </table>
+</div>
+
+<!-- ============ 9. NUGET ============ -->
+<div class="section">
+    <h2>9. NuGet Inventory</h2>
+    <table>
+        <tr><th>Package</th><th>Version</th><th>Project</th><th>Note</th></tr>
+        <tr><td>AutoMapper</td><td>14.0.0</td><td>Services</td><td>Known advisory NU1903</td></tr>
+        <tr><td>Microsoft.AspNetCore.Identity</td><td>2.3.1</td><td>Services</td><td>Obsolete 2018-era package</td></tr>
+        <tr><td>Microsoft.AspNetCore.Authentication.JwtBearer</td><td>8.0.0</td><td>E-Commerce</td><td>Align to 9.0.x</td></tr>
+        <tr><td>Microsoft.AspNetCore.Identity.EntityFrameworkCore</td><td>8.0.0</td><td>Presistance</td><td>Align to 9.0.x</td></tr>
+        <tr><td>Microsoft.EntityFrameworkCore / SqlServer / Tools</td><td>9.0.4</td><td>Presistance, Services</td><td>OK</td></tr>
+        <tr><td>StackExchange.Redis</td><td>2.8.37</td><td>Presistance</td><td>OK</td></tr>
+        <tr><td>Swashbuckle.AspNetCore</td><td>6.6.2</td><td>E-Commerce</td><td>OK</td></tr>
+        <tr><td>System.IdentityModel.Tokens.Jwt</td><td>7.1.2</td><td>Services</td><td>Older</td></tr>
+    </table>
+</div>
+
+<!-- ============ 10. ROADMAP ============ -->
+<div class="section">
+    <h2>10. Improvement Roadmap (after this session)</h2>
+    <h3>Next priorities</h3>
+    <table>
+        <tr><th>Priority</th><th>Task</th><th>Notes</th></tr>
+        <tr><td>P0</td><td>Secrets management</td><td>JWT key &amp; admin password &rarr; user-secrets / env vars; remove from appsettings.json</td></tr>
+        <tr><td>P0</td><td>Stripe/PayPal payments + webhooks</td><td>Drive OrderStatus: Pending &rarr; PaymentReceived/PaymentFailed</td></tr>
+        <tr><td>P0</td><td>Tests</td><td>xUnit + Moq for services; WebApplicationFactory integration tests</td></tr>
+        <tr><td>P1</td><td>Bind baskets to the authenticated user</td><td>Basket key from JWT user id instead of client string</td></tr>
+        <tr><td>P1</td><td>Restrict role management</td><td>Role whitelist; block self-demotion and last-admin lockout</td></tr>
+        <tr><td>P1</td><td>Serilog structured logging + health checks</td><td>Request logging, SQL/Redis probes</td></tr>
+        <tr><td>P1</td><td>Transaction around order creation</td><td>Save order + delete basket atomically</td></tr>
+        <tr><td>P2</td><td>API versioning + rate limiting</td><td>Production hardening</td></tr>
+        <tr><td>P2</td><td>Fix nullable OrderItem FK + naming debt</td><td>Migration + automated rename</td></tr>
+        <tr><td>P2</td><td>Align NuGet versions</td><td>All ASP.NET/EF packages &rarr; 9.0.x; AutoMapper patch</td></tr>
+        <tr><td>P2</td><td>CI pipeline</td><td>GitHub Actions build + test on PR</td></tr>
+    </table>
+    <div class="warn"><strong>Note on breaking-change policy:</strong> Securing the Orders module changed the API contract (email no longer accepted via query string). This is intentional &mdash; it was the core vulnerability. Any client must now send a JWT.</div>
+</div>
+
+<!-- ============ 11. SCORE OVERVIEW ============ -->
+<div class="section">
+    <h2>11. Score Overview</h2>
+    <table>
+        <tr><th>Feature</th><th>Score</th><th>One-line reason</th></tr>
+        <tr><td>Architecture &amp; Structure</td><td>9.0</td><td>Clean layering, minor dependency inversion</td></tr>
+        <tr><td>Error Handling</td><td>9.5</td><td>Code-driven exceptions, exhaustive mapping, all validation errors returned</td></tr>
+        <tr><td>Product Catalog</td><td>9.0</td><td>Spec pattern, clamped pagination, index-friendly search</td></tr>
+        <tr><td>Documentation / DevEx</td><td>8.0</td><td>Swagger + docs; no README yet</td></tr>
+        <tr><td>Data Layer &amp; Migrations</td><td>7.5</td><td>Solid configs; seeding fragility + nullable FK</td></tr>
+        <tr><td>API Design</td><td>7.5</td><td>Uniform envelope; route prefix inconsistency on Baskets</td></tr>
+        <tr><td>Basket</td><td>7.0</td><td>Clean Redis impl; still unauthenticated</td></tr>
+        <tr><td>Authentication</td><td>7.5</td><td>JWT + lockout now on; secret still in config</td></tr>
+        <tr><td>Performance</td><td>6.5</td><td>Order N+1 fixed; user list N+1 + no caching remain</td></tr>
+        <tr><td>Orders / Checkout</td><td>7.5</td><td>Secured + single-query; no payments yet</td></tr>
+        <tr><td>Admin Module</td><td>7.5</td><td>DTO-bound + consistent responses; role strings unvalidated</td></tr>
+        <tr><td>Observability</td><td>4.0</td><td>No structured logging / health checks</td></tr>
+        <tr><td>Security</td><td>6.5</td><td>Critical flaws closed; secrets &amp; baskets remain</td></tr>
+        <tr><td>Testing</td><td>1.0</td><td>No tests</td></tr>
+        <tr><td><strong>Overall</strong></td><td><strong>7.0</strong></td><td>Production-ready core structure; feature gaps remain</td></tr>
+    </table>
+</div>
+
+<footer>
+    <p>E-Commerce API Analysis | Generated August 2026 | Build verified: 0 errors, 8 warnings (pre-existing nullable warnings)</p>
+</footer>
+</div>
+</body>
+</html>

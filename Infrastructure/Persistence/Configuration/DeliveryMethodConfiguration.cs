@@ -2,7 +2,7 @@ using Domain.Models.Order;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Presistance.Configuration
+namespace Persistence.Configuration
 {
     public class DeliveryMethodConfiguration : IEntityTypeConfiguration<DeliveryMethod>
     {

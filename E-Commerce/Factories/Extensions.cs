@@ -1,4 +1,4 @@
-﻿using Domain.Contracts;
+using Domain.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Factories
@@ -18,8 +18,8 @@ namespace E_Commerce.Factories
         public static async Task<WebApplication> InitializeDatabaseAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();
-            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbinitializer>();
-            await dbInitializer.InitilizeAsync();
+            var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+            await dbInitializer.InitializeAsync();
             return app;
         }
     }

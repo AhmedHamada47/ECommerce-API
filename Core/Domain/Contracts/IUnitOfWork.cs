@@ -1,11 +1,11 @@
-﻿using Domain.Models;
+using Domain.Models;
 
 namespace Domain.Contracts
 {
     public interface IUnitOfWork
     {
         Task<int> SaveChangesAsync();
-        IGenricReposatory<TEntity, TKey> GetReposatory<TEntity, TKey>()
+        IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>()
             where TEntity : BaseEntity<TKey>;
     }
 }

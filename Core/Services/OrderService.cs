@@ -11,7 +11,7 @@ namespace Services
 {
     internal class OrderService(
         IUnitOfWork unitOfWork,
-        IBasketReposatory basketReposatory,
+        IBasketRepository basketReposatory,
         IMapper mapper) : IOrderService
     {
         public async Task<OrderDto> CreateOrderAsync(
@@ -24,13 +24,13 @@ namespace Services
                 ?? throw new BusinessException(BusinessErrorCode.BasketNotFound, basketId);
 
             var deliveryMethod = await unitOfWork
-                .GetReposatory<DeliveryMethod, int>().GetAsync(deliveryMethodId)
+                .GetRepository<DeliveryMethod, int>().GetAsync(deliveryMethodId)
                 ?? throw new BusinessException(BusinessErrorCode.DeliveryMethodNotFound, deliveryMethodId);
 
             var orderItems = new List<OrderItem>();
             var productIds = basket.Items.Select(item => item.Id).ToList();
             var products = await unitOfWork
-                .GetReposatory<Domain.Models.Product, int>()
+                .GetRepository<Domain.Models.Product, int>()
                 .GetAllAsync(new ProductByIdsSpecification(productIds));
             var productById = products.ToDictionary(product => product.Id);
 
@@ -63,7 +63,7 @@ namespace Services
                 Status = OrderStatus.Pending
             };
 
-            var orderRepo = unitOfWork.GetReposatory<Order, int>();
+            var orderRepo = unitOfWork.GetRepository<Order, int>();
             orderRepo.Add(order);
             await unitOfWork.SaveChangesAsync();
 
@@ -76,7 +76,7 @@ namespace Services
         {
             var spec = new OrderWithItemsSpecification(id, buyerEmail);
             var order = await unitOfWork
-                .GetReposatory<Order, int>().GetAsync(spec)
+                .GetRepository<Order, int>().GetAsync(spec)
                 ?? throw new BusinessException(BusinessErrorCode.OrderNotFound, id);
             return mapper.Map<OrderDto>(order);
         }
@@ -85,14 +85,22 @@ namespace Services
         {
             var spec = new OrderWithItemsSpecification(buyerEmail);
             var orders = await unitOfWork
-                .GetReposatory<Order, int>().GetAllAsync(spec);
+                .GetRepository<Order, int>().GetAllAsync(spec);
+            return mapper.Map<IEnumerable<OrderDto>>(orders);
+        }
+
+        public async Task<IEnumerable<OrderDto>> GetAllOrdersAsync()
+        {
+            var spec = new OrderWithItemsSpecification();
+            var orders = await unitOfWork
+                .GetRepository<Order, int>().GetAllAsync(spec);
             return mapper.Map<IEnumerable<OrderDto>>(orders);
         }
 
         public async Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodsAsync()
         {
             var deliveryMethods = await unitOfWork
-                .GetReposatory<DeliveryMethod, int>().GetAllAsync();
+                .GetRepository<DeliveryMethod, int>().GetAllAsync();
             return mapper.Map<IEnumerable<DeliveryMethodDto>>(deliveryMethods);
         }
     }

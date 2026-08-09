@@ -1,8 +1,8 @@
-﻿using Domain.Models;
+using Domain.Models;
 
 namespace Domain.Contracts
 {
-    public interface IGenricReposatory<TEntity, TKey> where TEntity : BaseEntity<TKey>
+    public interface IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         void Add(TEntity entity);
         void Update(TEntity entity);

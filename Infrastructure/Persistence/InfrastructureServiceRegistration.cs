@@ -1,14 +1,14 @@
-﻿using Domain.Contracts;
+using Domain.Contracts;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Presistance.Data;
-using Presistance.Repositories;
+using Persistence.Data;
+using Persistence.Repositories;
 using StackExchange.Redis;
 
-namespace Presistance;
+namespace Persistence;
 
 public static class InfrastructureServicesRegistration
 {
@@ -33,9 +33,9 @@ public static class InfrastructureServicesRegistration
         .AddEntityFrameworkStores<StoreDbContext>()
         .AddDefaultTokenProviders();
 
-        services.AddScoped<IDbinitializer, DbInitializer>();
+        services.AddScoped<IDbInitializer, DbInitializer>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IBasketReposatory, BasketRepository>();
+        services.AddScoped<IBasketRepository, BasketRepository>();
         services.AddSingleton<IConnectionMultiplexer>((_) =>
         {
             return ConnectionMultiplexer.Connect(configuration.GetConnectionString("RedisConnection")!);

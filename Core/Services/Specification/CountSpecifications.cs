@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Services.Specification
 {
-    internal class ProductCountSpecefications(ProductQueryParameter parameter) : BaseSpecification<Product>(CreateCriteria(parameter))
+    internal class ProductCountSpecifications(ProductQueryParameter parameter) : BaseSpecification<Product>(CreateCriteria(parameter))
     {
         private static Expression<Func<Product, bool>>
             CreateCriteria(ProductQueryParameter parameter)

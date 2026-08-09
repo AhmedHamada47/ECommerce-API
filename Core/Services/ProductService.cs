@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Domain.Contracts;
 using Domain.Exceptions;
 using Domain.Models;
@@ -15,12 +15,12 @@ namespace Services
         public async Task<PaginatedResponse<ProductResponse>> GetAllProductsAsync(ProductQueryParameter parameter)
         {
             var specification = new ProductWithBrandAndTypeSpecifications(parameter);
-            var result = await unitOfWork.GetReposatory<Product, int>().GetAllAsync(specification);
+            var result = await unitOfWork.GetRepository<Product, int>().GetAllAsync(specification);
 
             var data = mapper.Map<IEnumerable<Product>, IEnumerable<ProductResponse>>(result);
 
-            var totalCount = await unitOfWork.GetReposatory<Product, int>()
-                .CountAsync(new ProductCountSpecefications(parameter));
+            var totalCount = await unitOfWork.GetRepository<Product, int>()
+                .CountAsync(new ProductCountSpecifications(parameter));
 
             return new(parameter.PageIndex, parameter.PageSize, totalCount, data);
         }
@@ -28,14 +28,14 @@ namespace Services
         public async Task<ProductResponse> GetProductAsync(int id)
         {
             var specification = new ProductWithBrandAndTypeSpecifications(id);
-            var product = await unitOfWork.GetReposatory<Product, int>().GetAsync(specification)
+            var product = await unitOfWork.GetRepository<Product, int>().GetAsync(specification)
                 ?? throw new BusinessException(BusinessErrorCode.ProductNotFound, id);
             return mapper.Map<Product, ProductResponse>(product);
         }
 
         public async Task<IEnumerable<BrandResponse>> GetBrandAsync()
         {
-            var repo = unitOfWork.GetReposatory<ProductBrand, int>();
+            var repo = unitOfWork.GetRepository<ProductBrand, int>();
             var brands = await repo.GetAllAsync();
             var result = mapper.Map<IEnumerable<ProductBrand>, IEnumerable<BrandResponse>>(brands);
             return result;
@@ -43,7 +43,7 @@ namespace Services
 
         public async Task<IEnumerable<TypeResponse>> GetTypeAsync()
         {
-            var repo = unitOfWork.GetReposatory<ProductType, int>();
+            var repo = unitOfWork.GetRepository<ProductType, int>();
             var types = await repo.GetAllAsync();
             var result = mapper.Map<IEnumerable<ProductType>, IEnumerable<TypeResponse>>(types);
             return result;

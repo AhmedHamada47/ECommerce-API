@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Presistance;
-using Presistance.Data;
-using Presistance.Repositories;
+using Persistence;
+using Persistence.Data;
+using Persistence.Repositories;
+using Serilog;
 using Services;
 using ServicesAbstractions;
 
@@ -17,6 +18,14 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseSerilog((context, services, configuration) =>
+            configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.File("Logs/api-.log", rollingInterval: RollingInterval.Day));
 
         builder.Services.AddControllers();
         builder.Services.AddApplicationServices();
@@ -80,6 +89,9 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
+        builder.Services.AddHealthChecks()
+            .AddDbContextCheck<StoreDbContext>();
+
         var app = builder.Build();
         await app.InitializeDatabaseAsync();
 
@@ -97,6 +109,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapHealthChecks("/health");
         app.Run();
     }
 }

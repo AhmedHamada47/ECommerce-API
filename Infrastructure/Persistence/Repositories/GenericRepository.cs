@@ -1,12 +1,12 @@
 using Domain.Contracts;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Presistance.Data;
+using Persistence.Data;
 
-namespace Presistance.Repositories
+namespace Persistence.Repositories
 {
     public class GenericRepository<TEntity, TKey>(StoreDbContext context)
-        : IGenricReposatory<TEntity, TKey>
+        : IGenericRepository<TEntity, TKey>
             where TEntity : BaseEntity<TKey>
     {
         public void Add(TEntity entity) => context.Set<TEntity>().Add(entity);

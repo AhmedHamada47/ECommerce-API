@@ -4,7 +4,7 @@ using Domain.Models.Order;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Presistance.Data
+namespace Persistence.Data
 {
     public class StoreDbContext : IdentityDbContext<AppUser>
     {

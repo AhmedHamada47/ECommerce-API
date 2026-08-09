@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text.Json;
 using Domain.Contracts;
 using Domain.Identity;
@@ -6,16 +6,16 @@ using Domain.Models;
 using Domain.Models.Order;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Presistance.Data;
+using Persistence.Data;
 
-namespace Presistance
+namespace Persistence
 {
     public class DbInitializer(
         StoreDbContext context,
         UserManager<AppUser> userManager,
-        RoleManager<IdentityRole> roleManager) : IDbinitializer
+        RoleManager<IdentityRole> roleManager) : IDbInitializer
     {
-        public async Task InitilizeAsync()
+        public async Task InitializeAsync()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace Presistance
 
                 if (!context.Set<ProductBrand>().Any())
                 {
-                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Presistance\Data\Seeding\brands.json");
+                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\brands.json");
                     var objects = JsonSerializer.Deserialize<List<ProductBrand>>(data);
                     if (objects != null && objects.Any())
                     {
@@ -55,7 +55,7 @@ namespace Presistance
 
                 if (!context.Set<ProductType>().Any())
                 {
-                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Presistance\Data\Seeding\types.json");
+                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\types.json");
                     var objects = JsonSerializer.Deserialize<List<ProductType>>(data);
                     if (objects != null && objects.Any())
                     {
@@ -66,7 +66,7 @@ namespace Presistance
 
                 if (!context.Set<Product>().Any())
                 {
-                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Presistance\Data\Seeding\products.json");
+                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\products.json");
                     var objects = JsonSerializer.Deserialize<List<Product>>(data);
                     if (objects != null && objects.Any())
                     {
@@ -77,7 +77,7 @@ namespace Presistance
 
                 if (!context.Set<DeliveryMethod>().Any())
                 {
-                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Presistance\Data\Seeding\delivery.json");
+                    var data = await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\Seeding\delivery.json");
                     var objects = JsonSerializer.Deserialize<List<DeliveryMethod>>(data);
                     if (objects != null && objects.Any())
                     {

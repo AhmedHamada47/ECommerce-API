@@ -7,7 +7,7 @@ namespace Services
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Services.Assembly).Assembly);
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Services.Assembly).Assembly));
             services.AddScoped<IServiceManager, ServiceManager>();
             return services;
         }

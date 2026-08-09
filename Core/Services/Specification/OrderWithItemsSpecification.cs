@@ -6,6 +6,14 @@ namespace Services.Specification
 {
     internal class OrderWithItemsSpecification : BaseSpecification<Order>
     {
+        public OrderWithItemsSpecification()
+            : base(order => true)
+        {
+            AddInclude(order => order.OrderItems);
+            AddInclude(order => order.DeliveryMethod);
+            AddOrderByDescending(order => order.OrderDate);
+        }
+
         public OrderWithItemsSpecification(string buyerEmail)
             : base(order => order.BuyerEmail == buyerEmail)
         {

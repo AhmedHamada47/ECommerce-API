@@ -1,7 +1,7 @@
-﻿namespace Domain.Contracts
+namespace Domain.Contracts
 {
-    public interface IDbinitializer
+    public interface IDbInitializer
     {
-        Task InitilizeAsync();
+        Task InitializeAsync();
     }
 }

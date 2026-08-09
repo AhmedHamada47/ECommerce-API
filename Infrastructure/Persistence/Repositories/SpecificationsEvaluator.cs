@@ -1,7 +1,7 @@
 using Domain.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Presistance.Repositories
+namespace Persistence.Repositories
 {
     internal static class SpecificationsEvaluator
     {

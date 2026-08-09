@@ -9,7 +9,7 @@ namespace Services
     public class ServiceManager(
         IMapper mapper,
         IUnitOfWork unitOfWork,
-        IBasketReposatory basketReposatory,
+        IBasketRepository basketReposatory,
         UserManager<Domain.Identity.AppUser> userManager,
         SignInManager<Domain.Identity.AppUser> signInManager,
         RoleManager<IdentityRole> roleManager,

@@ -1,20 +1,20 @@
 using Domain.Contracts;
 using Domain.Models;
-using Presistance.Data;
+using Persistence.Data;
 
-namespace Presistance.Repositories
+namespace Persistence.Repositories
 {
     public class UnitOfWork(StoreDbContext context)
         : IUnitOfWork
     {
         private readonly Dictionary<string, object> _repositories = [];
 
-        public IGenricReposatory<TEntity, TKey> GetReposatory<TEntity, TKey>()
+        public IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>()
             where TEntity : BaseEntity<TKey>
         {
             var type = typeof(TEntity).Name;
             if (_repositories.ContainsKey(type))
-                return (IGenricReposatory<TEntity, TKey>)_repositories[type];
+                return (IGenericRepository<TEntity, TKey>)_repositories[type];
 
             var repo = new GenericRepository<TEntity, TKey>(context);
             _repositories[type] = repo;

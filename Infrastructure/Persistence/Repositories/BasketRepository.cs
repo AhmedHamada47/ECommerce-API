@@ -3,12 +3,13 @@ using Domain.Basket;
 using Domain.Contracts;
 using StackExchange.Redis;
 
-namespace Presistance.Repositories
+namespace Persistence.Repositories
 {
     public class BasketRepository(IConnectionMultiplexer connectionMultiplexer) :
-          IBasketReposatory
+          IBasketRepository
     {
         private readonly IDatabase database = connectionMultiplexer.GetDatabase();
+        private static readonly TimeSpan DefaultTimeToLive = TimeSpan.FromDays(30);
 
         public async Task<bool> DeleteAsync(string id) => await database.KeyDeleteAsync(id);
 
@@ -21,8 +22,9 @@ namespace Presistance.Repositories
 
         public async Task<CustomerBasket?> UpdateAsync(CustomerBasket basket, TimeSpan? timeToLive = null)
         {
+            var ttl = timeToLive is > TimeSpan.Zero ? timeToLive : DefaultTimeToLive;
             var jsonBasket = JsonSerializer.Serialize(basket);
-            var isCreatedOrUpdated = await database.StringSetAsync(basket.Id, jsonBasket, timeToLive ?? TimeSpan.FromDays(30));
+            var isCreatedOrUpdated = await database.StringSetAsync(basket.Id, jsonBasket, ttl);
             return isCreatedOrUpdated ? await GetAsync(basket.Id) : null;
         }
     }

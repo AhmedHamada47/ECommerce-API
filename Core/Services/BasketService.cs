@@ -7,7 +7,7 @@ using ServicesAbstractions;
 
 namespace Services
 {
-    internal class BasketService(IBasketReposatory basketReposatory, IMapper mapper) : IBasketService
+    internal class BasketService(IBasketRepository basketReposatory, IMapper mapper) : IBasketService
     {
         public async Task<bool> DeleteAsync(string id) => await basketReposatory.DeleteAsync(id);
 

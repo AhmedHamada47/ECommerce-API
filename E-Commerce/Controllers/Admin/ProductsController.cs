@@ -2,6 +2,7 @@ using Domain.Contracts;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 using Shared.Dto.Products;
 using ServicesAbstractions;
 
@@ -34,7 +35,7 @@ namespace E_Commerce.Controllers.Admin
                 TypeId = dto.TypeId
             };
 
-            var repo = unitOfWork.GetReposatory<Product, int>();
+            var repo = unitOfWork.GetRepository<Product, int>();
             repo.Add(product);
             await unitOfWork.SaveChangesAsync();
             return StatusCode(StatusCodes.Status201Created, product);
@@ -43,7 +44,7 @@ namespace E_Commerce.Controllers.Admin
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] ProductUpsertDto dto)
         {
-            var repo = unitOfWork.GetReposatory<Product, int>();
+            var repo = unitOfWork.GetRepository<Product, int>();
             var product = await repo.GetAsync(id);
             if (product == null) return NotFound();
 
@@ -62,7 +63,7 @@ namespace E_Commerce.Controllers.Admin
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var repo = unitOfWork.GetReposatory<Product, int>();
+            var repo = unitOfWork.GetRepository<Product, int>();
             var product = await repo.GetAsync(id);
             if (product == null) return NotFound();
             repo.Delete(product);
