@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce API — Documentation</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --bg: #0f172a;
+    --bg-soft: #1e293b;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-soft: #475569;
+    --border: #e2e8f0;
+    --code-bg: #f1f5f9;
+    --get: #059669;
+    --post: #2563eb;
+    --put: #d97706;
+    --delete: #dc2626;
+    --patch: #7c3aed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .sidebar {
+    position: fixed; top: 0; left: 0; width: 280px; height: 100vh; overflow-y: auto;
+    background: var(--bg); padding: 24px 16px; color: #e2e8f0;
+  }
+  .sidebar h1 { font-size: 1.05rem; margin-bottom: 4px; color: #fff; }
+  .sidebar .version { font-size: .78rem; color: #94a3b8; margin-bottom: 18px; }
+  .sidebar a { display: block; padding: 6px 10px; border-radius: 6px; color: #cbd5e1; text-decoration: none; font-size: .9rem; margin: 2px 0; }
+  .sidebar a:hover { background: var(--bg-soft); color: #fff; }
+  .sidebar .group { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: #64748b; margin: 16px 0 6px 10px; }
+  .content { margin-left: 280px; padding: 40px 56px; background: #f8fafc; min-height: 100vh; }
+  h2 { font-size: 1.6rem; margin: 8px 0 16px; color: var(--primary-dark); }
+  h3 { font-size: 1.15rem; margin: 28px 0 10px; }
+  p, li { font-size: .95rem; color: var(--text-soft); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(15,23,42,.06); }
+  .card h3 { margin-top: 0; }
+  .method { display: inline-block; min-width: 64px; text-align: center; font-weight: 700; color: #fff; border-radius: 6px; font-size: .78rem; padding: 3px 10px; margin-right: 10px; }
+  .get { background: var(--get); } .post { background: var(--post); } .put { background: var(--put); } .delete { background: var(--delete); }
+  .endpoint { font-family: Consolas, monospace; font-size: .92rem; }
+  .auth { font-size: .78rem; color: var(--primary); font-weight: 600; }
+  pre { background: #0b1120; color: #e2e8f0; border-radius: 8px; padding: 14px 16px; overflow-x: auto; font-size: .85rem; margin: 10px 0; }
+  code { background: var(--code-bg); border-radius: 4px; padding: 1px 6px; font-family: Consolas, monospace; font-size: .87em; }
+  pre code { background: transparent; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: .88rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  th { background: #f1f5f9; }
+  .badge { display: inline-block; font-size: .72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+  .badge-required { background: #fee2e2; color: #b91c1c; }
+  .badge-optional { background: #dbeafe; color: #1d4ed8; }
+  .warning { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 12px 16px; font-size: .9rem; margin: 12px 0; }
+  ul { padding-left: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .grid .cell { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .grid .cell h4 { font-size: .85rem; color: var(--primary-dark); margin-bottom: 4px; }
+  .grid .cell p { font-size: .82rem; }
+  @media (max-width: 900px) { .sidebar { display: none; } .content { margin-left: 0; padding: 24px; } }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <h1>E-Commerce API</h1>
+  <div class="version">v1.0 &middot; .NET 9 &middot; Swagger / UI</div>
+  <div class="group">Overview</div>
+  <a href="#overview">Introduction &amp; Stack</a>
+  <a href="#structure">Project Structure</a>
+  <a href="#getting-started">Getting Started</a>
+  <a href="#architecture">Architecture</a>
+  <a href="#auth">Authentication</a>
+  <div class="group">API Reference</div>
+  <a href="#products">Products</a>
+  <a href="#baskets">Baskets</a>
+  <a href="#orders">Orders</a>
+  <a href="#account">Account</a>
+  <a href="#admin-products">Admin &middot; Products</a>
+  <a href="#admin-orders">Admin &middot; Orders</a>
+  <a href="#admin-users">Admin &middot; Users</a>
+  <a href="#health">Health &amp; Observability</a>
+  <div class="group">Appendix</div>
+  <a href="#errors">Error Handling</a>
+  <a href="#testing">Testing</a>
+  <a href="#changelog">Change Log</a>
+</nav>
+
+<main class="content">
+
+<section class="card" id="overview">
+  <h2>Introduction</h2>
+  <p>The <strong>E-Commerce API</strong> is a clean-architecture REST backend for an online store, built on <strong>.NET 9</strong>. It exposes catalog, basket (Redis), ordering, and identity modules, plus an <strong>Admin area</strong> guarded by role-based authorization (JWT).</p>
+  <div class="grid" style="margin-top:16px">
+    <div class="cell"><h4>.NET 9</h4><p>ASP.NET Core Web API with minimal-program hosting and C# 13 primary constructors.</p></div>
+    <div class="cell"><h4>Entity Framework Core 9</h4><p>Code-first migrations, specification pattern for querying, and JSON seeding.</p></div>
+    <div class="cell"><h4>Redis</h4><p>Basket storage with TTL (30-day default) via StackExchange.Redis.</p></div>
+    <div class="cell"><h4>SQL Server</h4><p>Relational store for products, orders, identity (ASP.NET Core Identity).</p></div>
+    <div class="cell"><h4>JWT Bearer</h4><p>HS256-signed tokens, 7-day expiry, role claims (Admin / User).</p></div>
+    <div class="cell"><h4>AutoMapper 15</h4><p>Object mapping with profiles; patched (15.1.1) for CVE-2026-32933.</p></div>
+    <div class="cell"><h4>Serilog</h4><p>Structured logging — console + rolling daily file under <code>Logs/</code>.</p></div>
+    <div class="cell"><h4>Health Checks</h4><p>DB-ping endpoint at <code>GET /health</code>.</p></div>
+    <div class="cell"><h4>Swagger</h4><p>OpenAPI UI with Bearer security definition (development).</p></div>
+    <div class="cell"><h4>xUnit + Moq</h4><p>15 unit tests covering services (product, basket, order).</p></div>
+  </div>
+</section>
+
+<section class="card" id="structure">
+  <h2>Project Structure</h2>
+  <pre><code>ECommerce-API/
+├── Core/
+│   ├── Domain/                  # Entities, contracts (IGenericRepository, IUnitOfWork…), exceptions
+│   ├── ServicesAbstractions/    # Public service interfaces &amp; DTO contracts
+│   └── Services/                # Implementations, mapping profiles, specification classes
+├── Infrastructure/
+│   ├── Persistence/             # EF Core DbContext, configurations, migrations, repositories
+│   └── Presentation/            # API controllers (Account, Basket, Order, Product)
+├── Shared/
+│   └── Dto/                     # Request/response records shared across layers
+├── E-Commerce/                  # Web host: Program.cs, middleware, admin controllers
+├── Tests/
+│   └── ECommerce.Tests/         # xUnit + Moq unit tests (15 passing)
+└── E-Commerce.sln</code></pre>
+  <h3>Key types</h3>
+  <table>
+    <tr><th>Contract</th><th>Role</th></tr>
+    <tr><td><code>IGenericRepository&lt;TEntity, TKey&gt;</code></td><td>CRUD + specification-based querying</td></tr>
+    <tr><td><code>IUnitOfWork</code></td><td>Repository access + <code>SaveChangesAsync()</code> transaction boundary</td></tr>
+    <tr><td><code>ISpecification&lt;T&gt;</code></td><td>Criteria / includes / ordering / paging for queries</td></tr>
+    <tr><td><code>IBasketRepository</code></td><td>Redis-backed basket get / update (TTL) / delete</td></tr>
+    <tr><td><code>IServiceManager</code></td><td>Facade exposing Auth, Product, Basket, Order, User services</td></tr>
+    <tr><td><code>IDbInitializer</code></td><td>Applies migrations + seeds roles, brands, types, products, delivery methods</td></tr>
+  </table>
+</section>
+
+<section class="card" id="getting-started">
+  <h2>Getting Started</h2>
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>.NET SDK 9.0</li>
+    <li>SQL Server (or LocalDB) instance</li>
+    <li>Redis server (default <code>localhost:6379</code>)</li>
+  </ul>
+  <h3>Configuration (<code>appsettings.json</code>)</h3>
+  <pre><code>{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=ECommerceDb;Trusted_Connection=True;",
+    "Redis": "localhost:6379"
+  },
+  "JWT": {
+    "SecretKey": "&lt;your-256-bit-secret&gt;",
+    "Issuer": "https://localhost:7001",
+    "Audience": "https://localhost:7001"
+  },
+  "BaseUrl": "https://localhost:7001"
+}</code></pre>
+  <h3>Run</h3>
+  <pre><code>dotnet restore
+dotnet ef database update --project Infrastructure/Persistence --startup-project E-Commerce
+dotnet run --project E-Commerce</code></pre>
+  <p>The startup initializer applies migrations and seeds data automatically. Swagger UI is available at <code>/swagger</code> in development. Seeded <strong>Admin</strong> role is created during initialization; assign a user to it via the admin users endpoints.</p>
+</section>
+
+<section class="card" id="architecture">
+  <h2>Architecture</h2>
+  <p>The solution follows <strong>Clean Architecture</strong>: dependencies point inward. Domain defines entities and contracts; Services orchestrate business rules and mapping; Persistence implements EF Core + Redis; Presentation exposes HTTP; the host wires everything and hosts admin controllers.</p>
+  <ul>
+    <li><strong>Specification pattern</strong> keeps query logic reusable (<code>ProductWithBrandAndTypeSpecifications</code>, <code>OrderWithItemsSpecification</code>, …).</li>
+    <li><strong>Generic repository</strong> + <strong>Unit of Work</strong> give a uniform data-access surface.</li>
+    <li><strong>Global exception handler</strong> converts <code>BusinessException</code> and validation failures into <code>ProblemDetails</code> responses.</li>
+    <li><strong>DTOs everywhere</strong> — entities are never serialized to clients except through mapped responses.</li>
+  </ul>
+</section>
+
+<section class="card" id="auth">
+  <h2>Authentication</h2>
+  <p>Flow: <code>POST /api/account/register</code> or <code>POST /api/account/login</code> &rarr; returns a signed JWT. Send it as <code>Authorization: Bearer &lt;token&gt;</code>. Tokens live 7 days and carry <code>nameid</code>, <code>email</code>, <code>given_name</code> and <code>role</code> claims.</p>
+  <table>
+    <tr><th>Route area</th><th>Required auth</th></tr>
+    <tr><td>Account (register/login)</td><td>Public</td></tr>
+    <tr><td>Products, Baskets</td><td>Public</td></tr>
+    <tr><td>Orders, <code>/api/account/currentUser</code></td><td><span class="badge badge-required">Authorize — any role</span></td></tr>
+    <tr><td><code>/api/admin/**</code></td><td><span class="badge badge-required">Authorize — Admin role</span></td></tr>
+  </table>
+  <p class="warning"><strong>Note:</strong> production JWT settings (<code>Issuer</code>, <code>Audience</code>, <code>SecretKey</code>) must come from secure configuration and the secret should be &ge; 32 bytes.</p>
+</section>
+
+<section class="card" id="products">
+  <h2>Products &middot; <code>/api/product</code></h2>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/product</span></h3>
+  <p>Paginated product list with filtering, search and sorting.</p>
+  <table>
+    <tr><th>Query param</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    <tr><td><code>BrandId</code></td><td>int</td><td class="badge badge-optional">optional</td><td>Filter by brand</td></tr>
+    <tr><td><code>TypeId</code></td><td>int</td><td class="badge badge-optional">optional</td><td>Filter by type</td></tr>
+    <tr><td><code>SortBy</code></td><td>string</td><td class="badge badge-optional">optional</td><td><code>priceAsc</code> / <code>priceDesc</code></td></tr>
+    <tr><td><code>Search</code></td><td>string</td><td class="badge badge-optional">optional</td><td>Name substring</td></tr>
+    <tr><td><code>PageIndex</code></td><td>int</td><td class="badge badge-optional">optional</td><td>1-based (default 1)</td></tr>
+    <tr><td><code>PageSize</code></td><td>int</td><td class="badge badge-optional">optional</td><td>Clamped to 1–10 (default 5)</td></tr>
+  </table>
+  <pre><code>GET /api/product?brandId=2&amp;sortBy=priceAsc&amp;pageIndex=1&amp;pageSize=10</code></pre>
+  <p>Response — <code>PaginatedResponse&lt;ProductResponse&gt;</code>:</p>
+  <pre><code>{
+  "pageIndex": 1, "pageSize": 10, "count": 2,
+  "data": [{
+    "id": 1, "name": "Air Jordan", "description": "...",
+    "price": 120.50, "pictureUrl": "https://.../images/x.jpg",
+    "brandName": "Nike", "typeName": "Shoes"
+  }]
+}</code></pre>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/product/{id}</span></h3>
+  <p>Single product by id. <code>404</code> with <code>ProductNotFound</code> error code when missing.</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/product/brands</span></h3>
+  <p>All brands (<code>BrandResponse[]</code>).</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/product/types</span></h3>
+  <p>All product types (<code>TypeResponse[]</code>).</p>
+</section>
+
+<section class="card" id="baskets">
+  <h2>Baskets &middot; <code>/api/baskets</code> (Redis)</h2>
+  <p>Public endpoints. Baskets are stored in Redis under the client-supplied id (typically a GUID generated client-side) with a default TTL of <strong>30 days</strong>. Non-positive TTLs fall back to the default.</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/baskets?id={id}</span></h3>
+  <p>Returns <code>BasketDto</code> or <code>404 BasketNotFound</code>.</p>
+
+  <h3><span class="method post">POST</span><span class="endpoint">/api/baskets</span></h3>
+  <p>Create or replace a basket. Request body <code>BasketDto</code>:</p>
+  <pre><code>{
+  "id": "a5c9-…",
+  "basketItems": [{
+    "id": 1, "productName": "Air Jordan", "pictureUrl": "…",
+    "price": 120.50, "quantity": 2
+  }]
+}</code></pre>
+  <p class="warning"><strong>Note:</strong> the API stores the basket as-is and does not re-validate prices against the catalog at write time.</p>
+
+  <h3><span class="method delete">DELETE</span><span class="endpoint">/api/baskets/{id}</span></h3>
+  <p>Removes the key. Returns <code>204</code>.</p>
+</section>
+
+<section class="card" id="orders">
+  <h2>Orders &middot; <code>/api/orders</code></h2>
+  <p class="auth">Requires JWT (any authenticated user; buyer email is taken from the token).</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/orders</span></h3>
+  <p>Orders for the current user (<code>OrderDto[]</code>).</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/orders/{id}</span></h3>
+  <p>Order by id — only if it belongs to the current user; otherwise <code>404 OrderNotFound</code>.</p>
+
+  <h3><span class="method post">POST</span><span class="endpoint">/api/orders</span></h3>
+  <p>Place an order from an existing basket. Request body <code>CreateOrderDto</code>:</p>
+  <pre><code>{
+  "basketId": "a5c9-…",
+  "deliveryMethodId": 2,
+  "shippingAddress": {
+    "firstName": "John", "lastName": "Doe", "street": "Main St 1",
+    "city": "Cairo", "state": "Cairo", "zipCode": "12345"
+  }
+}</code></pre>
+  <ul>
+    <li>Prices are copied from the <strong>catalog</strong> (not the basket).</li>
+    <li>Basket items without a matching product are skipped.</li>
+    <li>Subtotal = &Sigma; (price &times; quantity); <code>Total = Subtotal + delivery price</code>.</li>
+    <li>Order is created with status <code>Pending</code>, then the basket is deleted.</li>
+  </ul>
+  <pre><code>{
+  "id": 1, "buyerEmail": "john@example.com", "orderDate": "2026-08-10T…",
+  "deliveryMethod": "DHL", "deliveryPrice": 5, "subtotal": 241.0, "total": 246.0,
+  "status": "Pending", "orderItems": [ … ]
+}</code></pre>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/orders/deliveryMethods</span></h3>
+  <p>Available delivery methods (<code>DeliveryMethodDto[]</code>).</p>
+</section>
+
+<section class="card" id="account">
+  <h2>Account &middot; <code>/api/account</code></h2>
+
+  <h3><span class="method post">POST</span><span class="endpoint">/api/account/register</span></h3>
+  <p>Create an account (role <code>User</code> auto-assigned) and receive a token.</p>
+  <pre><code>POST /api/account/register
+{ "displayName": "John", "email": "john@example.com", "password": "Passw0rd!" }</code></pre>
+  <p>Response — <code>AuthResponseDto</code>:</p>
+  <pre><code>{ "id": "…", "email": "john@example.com", "displayName": "John",
+  "token": "eyJhbGciOi…", "roles": ["User"] }</code></pre>
+
+  <h3><span class="method post">POST</span><span class="endpoint">/api/account/login</span></h3>
+  <p>Sign in (<code>LoginDto</code>: <code>email</code>, <code>password</code>). Failed attempts use Identity lockout. Invalid credentials &rarr; <code>401 InvalidCredentials</code>.</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/account/currentUser</span></h3>
+  <p class="auth">Authorize. Refreshed user info + fresh token.</p>
+</section>
+
+<section class="card" id="admin-products">
+  <h2>Admin &middot; Products &middot; <code>/api/admin/products</code></h2>
+  <p class="auth">Requires <strong>Admin</strong> role.</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/admin/products</span></h3>
+  <p>All products (first page, default paging).</p>
+
+  <h3><span class="method post">POST</span><span class="endpoint">/api/admin/products</span></h3>
+  <p>Create product (<code>ProductUpsertDto</code>: name, description, pictureUrl, price, brandId, typeId). Returns <code>201</code>.</p>
+
+  <h3><span class="method put">PUT</span><span class="endpoint">/api/admin/products/{id}</span></h3>
+  <p>Update product. <code>404</code> if not found, <code>204</code> on success.</p>
+
+  <h3><span class="method delete">DELETE</span><span class="endpoint">/api/admin/products/{id}</span></h3>
+  <p>Delete product. <code>404</code> if not found, <code>204</code> on success.</p>
+</section>
+
+<section class="card" id="admin-orders">
+  <h2>Admin &middot; Orders &middot; <code>/api/admin/orders</code></h2>
+  <p class="auth">Requires <strong>Admin</strong> role.</p>
+
+  <h3><span class="method get">GET</span><span class="endpoint">/api/admin/orders?email={email}</span></h3>
+  <p>All orders, or filtered by a buyer email.</p>
+
+  <h3><span class="method put">PUT</span><span class="endpoint">/api/admin/orders/{id}/status</span></h3>
+  <p>Update order status. Body is a raw <code>OrderStatus</code> enum string:</p>
+  <pre><code>PUT /api/admin/orders/1/status
+"Shipped"</code></pre>
+  <p>Statuses: <code>Pending</code>, <code>PaymentReceived</code>, <code>PaymentFailed</code>, <code>Shipped</code>, <code>Delivered</code>, <code>Cancelled</code>.</p>
+</section>
+
+<section class="card" id="admin-users">
+  <h2>Admin &middot; Users &middot; <code>/api/admin/users</code></h2>
+  <p class="auth">Requires <strong>Admin</strong> role.</p>
+  <table>
+    <tr><th>Method &amp; Route</th><th>Description</th></tr>
+    <tr><td><span class="method get">GET</span><code>/api/admin/users</code></td><td>List all users</td></tr>
+    <tr><td><span class="method get">GET</span><code>/api/admin/users/{id}</code></td><td>Get a user</td></tr>
+    <tr><td><span class="method post">POST</span><code>/api/admin/users/{id}/roles</code></td><td>Assign role — body raw string <code>"Admin"</code></td></tr>
+    <tr><td><span class="method delete">DELETE</span><code>/api/admin/users/{id}/roles</code></td><td>Remove role — body raw string</td></tr>
+    <tr><td><span class="method post">POST</span><code>/api/admin/users/{id}/lockout</code></td><td>Toggle account lockout</td></tr>
+    <tr><td><span class="method delete">DELETE</span><code>/api/admin/users/{id}</code></td><td>Delete user</td></tr>
+  </table>
+</section>
+
+<section class="card" id="health">
+  <h2>Health &amp; Observability</h2>
+  <h3><span class="method get">GET</span><span class="endpoint">/health</span></h3>
+  <p>Liveness/readiness probe that pings the SQL database via EF Core:</p>
+  <pre><code>{
+  "status": "Healthy",
+  "results": { "E-Commerce_DbContext": { "status": "Healthy", "duration": "00:00:00.03" } }
+}</code></pre>
+  <p><strong>Logging:</strong> Serilog writes structured logs to the console and to rolling daily files at <code>Logs/api-YYYYMMDD.log</code>. Global exception handler + <code>AddProblemDetails</code> produce RFC 7807 error responses for all API failures.</p>
+</section>
+
+<section class="card" id="errors">
+  <h2>Error Handling</h2>
+  <p>Failures are returned as <code>application/problem+json</code>:</p>
+  <pre><code>{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+  "title": "Product with id 99 not found",
+  "status": 404,
+  "traceId": "…",
+  "errors": { "errorCode": "ProductNotFound" }
+}</code></pre>
+  <table>
+    <tr><th>Error code</th><th>Typical status</th><th>Meaning</th></tr>
+    <tr><td><code>EmailAlreadyRegistered</code></td><td>400</td><td>Duplicate email on register</td></tr>
+    <tr><td><code>InvalidCredentials</code></td><td>401</td><td>Bad email/password</td></tr>
+    <tr><td><code>UserNotFound</code></td><td>404</td><td>Unknown user id</td></tr>
+    <tr><td><code>ProductNotFound</code></td><td>404</td><td>Unknown product id</td></tr>
+    <tr><td><code>BasketNotFound</code></td><td>404</td><td>Basket key missing in Redis</td></tr>
+    <tr><td><code>BasketUpdateFailed</code></td><td>500</td><td>Redis write failed</td></tr>
+    <tr><td><code>OrderNotFound</code></td><td>404</td><td>Unknown order / not owned by caller</td></tr>
+    <tr><td><code>DeliveryMethodNotFound</code></td><td>404</td><td>Unknown delivery method id</td></tr>
+  </table>
+</section>
+
+<section class="card" id="testing">
+  <h2>Testing</h2>
+  <p>Unit tests live in <code>Tests/ECommerce.Tests</code> (xUnit + Moq, AutoMapper built from the real profiles).</p>
+  <pre><code>dotnet test E-Commerce.sln</code></pre>
+  <table>
+    <tr><th>Suite</th><th>Covers</th></tr>
+    <tr><td><code>ProductServiceTests</code></td><td>Pagination + mapping, specification usage, not-found path, brands</td></tr>
+    <tr><td><code>BasketServiceTests</code></td><td>Persist/update, missing-basket, update-failure, delete</td></tr>
+    <tr><td><code>OrderServiceTests</code></td><td>Subtotal/total computation, item filtering, basket &amp; delivery-method errors, per-user queries</td></tr>
+  </table>
+  <p class="warning"><strong>Status:</strong> 15 tests &middot; all passing &middot; solution builds with 0 warnings / 0 errors.</p>
+</section>
+
+<section class="card" id="changelog">
+  <h2>Change Log (latest session)</h2>
+  <table>
+    <tr><th>Area</th><th>Change</th></tr>
+    <tr><td>Naming debt</td><td>Renamed <code>Presistance</code> &rarr; <code>Persistence</code>, <code>IGenricReposatory</code> &rarr; <code>IGenericRepository</code>, <code>IBasketReposatory</code> &rarr; <code>IBasketRepository</code>, <code>GetReposatory</code> &rarr; <code>GetRepository</code>, <code>Specefications</code> &rarr; <code>Specifications</code>, <code>IDbinitializer/InitilizeAsync</code> &rarr; <code>IDbInitializer/InitializeAsync</code> (code, files and folders).</td></tr>
+    <tr><td>Security</td><td>AutoMapper 14.0.0 &rarr; <strong>15.1.1</strong> (fixes CVE-2026-32933 / GHSA-rvv3-g6hj-g44x DoS); JwtBearer 8.0.0 &rarr; <strong>9.0.4</strong> (removes vulnerable transitive <code>System.Security.Cryptography.Xml</code>). <code>dotnet list package --vulnerable</code> is now clean.</td></tr>
+    <tr><td>Observability</td><td>Serilog (console + rolling file) and health checks (<code>GET /health</code>, DB ping) added to <code>Program.cs</code>.</td></tr>
+    <tr><td>Baskets</td><td>TTL guard in <code>BasketRepository</code>: non-positive TTLs now fall back to the 30-day default instead of deleting the key.</td></tr>
+    <tr><td>Tests</td><td>New <code>Tests/ECommerce.Tests</code> project (xUnit + Moq) added to the solution — 15 tests for product, basket and order services.</td></tr>
+  </table>
+</section>
+
+</main>
+</body>
+</html>

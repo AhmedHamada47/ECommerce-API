@@ -22,7 +22,9 @@ namespace Persistence.Repositories
 
         public async Task<CustomerBasket?> UpdateAsync(CustomerBasket basket, TimeSpan? timeToLive = null)
         {
-            var ttl = timeToLive is > TimeSpan.Zero ? timeToLive : DefaultTimeToLive;
+            var ttl = timeToLive.HasValue && timeToLive.Value > TimeSpan.Zero
+                ? timeToLive
+                : DefaultTimeToLive;
             var jsonBasket = JsonSerializer.Serialize(basket);
             var isCreatedOrUpdated = await database.StringSetAsync(basket.Id, jsonBasket, ttl);
             return isCreatedOrUpdated ? await GetAsync(basket.Id) : null;
